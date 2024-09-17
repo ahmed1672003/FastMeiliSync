@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace MeiliSync.Infrastructure.Context.Migrations
+namespace FastMeiliSync.Infrastructure.Context.Migrations
 {
     [DbContext(typeof(MeiliSyncDbContext))]
     partial class MeiliSyncDbContextModelSnapshot : ModelSnapshot
@@ -23,7 +23,7 @@ namespace MeiliSync.Infrastructure.Context.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("MeiliSync.Domain.Entities.MeiliSearches.MeiliSearch", b =>
+            modelBuilder.Entity("FastMeiliSync.Domain.Entities.MeiliSearches.MeiliSearch", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -55,10 +55,13 @@ namespace MeiliSync.Infrastructure.Context.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Label")
+                        .IsUnique();
+
                     b.ToTable("MeiliSearche", "Public");
                 });
 
-            modelBuilder.Entity("MeiliSync.Domain.Entities.Sources.Source", b =>
+            modelBuilder.Entity("FastMeiliSync.Domain.Entities.Sources.Source", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -108,7 +111,7 @@ namespace MeiliSync.Infrastructure.Context.Migrations
                     b.ToTable("Source", "Public");
                 });
 
-            modelBuilder.Entity("MeiliSync.Domain.Entities.Syncs.Sync", b =>
+            modelBuilder.Entity("FastMeiliSync.Domain.Entities.Syncs.Sync", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -138,6 +141,9 @@ namespace MeiliSync.Infrastructure.Context.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Label")
+                        .IsUnique();
+
                     b.HasIndex("MeiliSearchId");
 
                     b.HasIndex("SourceId", "MeiliSearchId")
@@ -146,16 +152,16 @@ namespace MeiliSync.Infrastructure.Context.Migrations
                     b.ToTable("Sync", "Public");
                 });
 
-            modelBuilder.Entity("MeiliSync.Domain.Entities.Syncs.Sync", b =>
+            modelBuilder.Entity("FastMeiliSync.Domain.Entities.Syncs.Sync", b =>
                 {
-                    b.HasOne("MeiliSync.Domain.Entities.MeiliSearches.MeiliSearch", "MeiliSearch")
-                        .WithMany()
+                    b.HasOne("FastMeiliSync.Domain.Entities.MeiliSearches.MeiliSearch", "MeiliSearch")
+                        .WithMany("Syncs")
                         .HasForeignKey("MeiliSearchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MeiliSync.Domain.Entities.Sources.Source", "Source")
-                        .WithMany()
+                    b.HasOne("FastMeiliSync.Domain.Entities.Sources.Source", "Source")
+                        .WithMany("Syncs")
                         .HasForeignKey("SourceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -163,6 +169,16 @@ namespace MeiliSync.Infrastructure.Context.Migrations
                     b.Navigation("MeiliSearch");
 
                     b.Navigation("Source");
+                });
+
+            modelBuilder.Entity("FastMeiliSync.Domain.Entities.MeiliSearches.MeiliSearch", b =>
+                {
+                    b.Navigation("Syncs");
+                });
+
+            modelBuilder.Entity("FastMeiliSync.Domain.Entities.Sources.Source", b =>
+                {
+                    b.Navigation("Syncs");
                 });
 #pragma warning restore 612, 618
         }
