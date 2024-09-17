@@ -18,5 +18,3 @@ global using Microsoft.EntityFrameworkCore.Metadata.Builders;
 global using Microsoft.EntityFrameworkCore.Query;
 global using Microsoft.EntityFrameworkCore.Storage;
 global using Npgsql;
-
-namespace FastMeiliSync.Infrastructure;
