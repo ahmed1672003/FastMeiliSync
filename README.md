@@ -1,10 +1,10 @@
 # FastMeiliSync
 
-FastMeiliSync is a powerful synchronization server built using ASP.NET Core, designed to sync your database with the search engine [MeiliSearch](https://www.meilisearch.com/). It currently supports **PostgreSQL**, with future support planned for **MySQL** and **MongoDB**.
+FastMeiliSync is a powerful synchronization server built using ASP.NET Core, designed to sync multiple databases with multiple instances of the search engine [MeiliSearch](https://www.meilisearch.com/). It currently supports **PostgreSQL**, with future support planned for **MySQL** and **MongoDB**.
 
 ## Features
-- **Database Sync:** Automatically syncs your PostgreSQL database with MeiliSearch.
-- **Real-time updates:** Ensures that all changes in your database are reflected in MeiliSearch in real-time.
+- **Multiple Database Sync:** Automatically syncs multiple databases with multiple MeiliSearch instances.
+- **Real-time updates:** Ensures that all changes in your databases are reflected in the corresponding MeiliSearch instances in real-time.
 - **Future Support:** Upcoming support for MySQL and MongoDB.
 - **Easy Setup:** Simple configuration to get started.
 
@@ -16,9 +16,9 @@ FastMeiliSync is a powerful synchronization server built using ASP.NET Core, des
 ## Getting Started
 
 ### Prerequisites
-- [.NET 8+ SDK](https://dotnet.microsoft.com/download/dotnet)
-- [MeiliSearch](https://www.meilisearch.com/) instance
-- PostgreSQL database
+- [.NET 6+ SDK](https://dotnet.microsoft.com/download/dotnet)
+- [MeiliSearch](https://www.meilisearch.com/) instances
+- Supported databases (e.g., PostgreSQL)
 
 ### Installation
 
