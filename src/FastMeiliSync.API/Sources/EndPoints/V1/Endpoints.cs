@@ -1,10 +1,4 @@
-﻿using MediatR;
-using MeiliSync.Application.Features.Sources.Commands.Create;
-using MeiliSync.Application.Features.Sources.Commands.Delete;
-using MeiliSync.Application.Features.Sources.Commands.Update;
-using MeiliSync.Application.Features.Sources.Queries.GetById;
-
-namespace MeiliSync.API.Sources.Endpoints.V1;
+﻿namespace FastMeiliSync.API.Sources.EndPoints.V1;
 
 public sealed class SourceEndpoints
 {

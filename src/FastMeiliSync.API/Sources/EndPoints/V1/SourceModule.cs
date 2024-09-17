@@ -1,8 +1,4 @@
-﻿using Carter;
-using MeiliSync.BuildingBlock.Core.Router;
-using MeiliSync.Domain.Entities.Sources;
-
-namespace MeiliSync.API.Sources.Endpoints.V1;
+﻿namespace FastMeiliSync.API.Sources.EndPoints.V1;
 
 public sealed class SourceModule : ICarterModule
 {

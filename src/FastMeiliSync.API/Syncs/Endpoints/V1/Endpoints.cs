@@ -1,4 +1,4 @@
-﻿namespace MeiliSync.API.Sources.Endpoints.V1;
+﻿namespace FastMeiliSync.API.Syncs.Endpoints.V1;
 
 public sealed class SyncEndpoints
 {

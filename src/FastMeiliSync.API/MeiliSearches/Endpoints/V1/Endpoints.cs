@@ -1,6 +1,4 @@
-﻿using FastMeiliSync.Application.Features.MeiliSearches.Commands.Create;
-
-namespace MeiliSync.API.MeiliSearches.Endpoints.V1;
+﻿namespace FastMeiliSync.API.MeiliSearches.Endpoints.V1;
 
 public sealed class MeiliSearchEndpoints
 {

@@ -1,8 +1,4 @@
-﻿using Carter;
-using MeiliSync.BuildingBlock.Core.Router;
-using MeiliSync.Domain.Entities.MeiliSearches;
-
-namespace MeiliSync.API.MeiliSearches.Endpoints.V1;
+﻿namespace FastMeiliSync.API.MeiliSearches.Endpoints.V1;
 
 public sealed class MeiliSearchModule : ICarterModule
 {

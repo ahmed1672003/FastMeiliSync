@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FastMeiliSync.Application\FastMeiliSync.Application.csproj" />
+    <ProjectReference Include="..\FastMeiliSync.Infrastructure\FastMeiliSync.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
