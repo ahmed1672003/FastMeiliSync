@@ -16,7 +16,7 @@ FastMeiliSync is a powerful synchronization server built using ASP.NET Core, des
 ## Getting Started
 
 ### Prerequisites
-- [.NET 6+ SDK](https://dotnet.microsoft.com/download/dotnet)
+- [.NET 8+ SDK](https://dotnet.microsoft.com/download/dotnet)
 - [MeiliSearch](https://www.meilisearch.com/) instances
 - Supported databases (e.g., PostgreSQL)
 
