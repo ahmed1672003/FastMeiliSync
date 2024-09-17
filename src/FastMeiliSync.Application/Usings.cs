@@ -1,0 +1,20 @@
+﻿global using System.Data;
+global using System.Net;
+global using System.Reflection;
+global using FastMeiliSync.Application.Behaviores;
+global using FastMeiliSync.Application.Features.MeiliSearches.Queries.GetById;
+global using FastMeiliSync.Application.Features.Sources.Queries.GetById;
+global using FastMeiliSync.Domain.Abstraction;
+global using FastMeiliSync.Domain.Entities.MeiliSearches;
+global using FastMeiliSync.Domain.Entities.Sources;
+global using FastMeiliSync.Domain.Entities.Syncs;
+global using FastMeiliSync.Domain.Enums;
+global using FastMeiliSync.Shared.BaseResponse;
+global using FastMeiliSync.Shared.Exceptions;
+global using FluentValidation;
+global using MediatR;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
+
+namespace FastMeiliSync.Application;

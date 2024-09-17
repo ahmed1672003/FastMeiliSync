@@ -1,0 +1,22 @@
+﻿global using System.Data;
+global using System.Linq.Expressions;
+global using System.Reflection;
+global using FastMeiliSync.Domain.Abstraction;
+global using FastMeiliSync.Domain.Base;
+global using FastMeiliSync.Domain.Entities.MeiliSearches;
+global using FastMeiliSync.Domain.Entities.Sources;
+global using FastMeiliSync.Domain.Entities.Syncs;
+global using FastMeiliSync.Domain.Entities.Tables;
+global using FastMeiliSync.Domain.Entities.TableSources;
+global using FastMeiliSync.Domain.Enums;
+global using FastMeiliSync.Shared.Constants;
+global using Meilisearch;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore.ChangeTracking;
+global using Microsoft.EntityFrameworkCore.Diagnostics;
+global using Microsoft.EntityFrameworkCore.Metadata.Builders;
+global using Microsoft.EntityFrameworkCore.Query;
+global using Microsoft.EntityFrameworkCore.Storage;
+global using Npgsql;
+
+namespace FastMeiliSync.Infrastructure;
