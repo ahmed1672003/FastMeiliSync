@@ -10,5 +10,9 @@ public sealed class MeiliSearchModule : ICarterModule
         groupe.MapPut(string.Empty, MeiliSearchEndpoints.HandleUpdateAsync);
         groupe.MapDelete(string.Empty, MeiliSearchEndpoints.HandleDeleteByIdAsync);
         groupe.MapGet(string.Empty, MeiliSearchEndpoints.HandleGetByIdAsync);
+        groupe.MapGet(
+            Router.MeiliSearchRoutes.V1.Paginate,
+            MeiliSearchEndpoints.HandlePaginateAsync
+        );
     }
 }

@@ -28,7 +28,12 @@ internal sealed record DeleteMeiliSearchByIdHandler(IMeiliSyncUnitOfWork unitOfW
             if (success)
             {
                 await transaction.CommitAsync(cancellationToken);
-                return new Response { Success = success, StatusCode = (int)HttpStatusCode.OK };
+                return new Response
+                {
+                    Success = success,
+                    StatusCode = (int)HttpStatusCode.OK,
+                    Message = "operation done successfully"
+                };
             }
 
             await transaction.RollbackAsync(cancellationToken);

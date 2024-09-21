@@ -1,6 +1,6 @@
 ﻿namespace FastMeiliSync.Domain.Entities.Syncs;
 
-public sealed record Sync : Entity<Guid>, ITrackableCreate, ITrackableUpdate, ITrackableDelete
+public sealed record Sync : Entity<Guid>, ITrackableCreate, ITrackableUpdate
 {
     private Sync() { }
 
@@ -17,8 +17,6 @@ public sealed record Sync : Entity<Guid>, ITrackableCreate, ITrackableUpdate, IT
     public Guid MeiliSearchId { get; private set; }
     public DateTime CreatedOn { get; private set; }
     public DateTime? UpdatedOn { get; private set; }
-    public DateTime? DeletedOn { get; private set; }
-    public bool Deleted { get; private set; }
     public Source Source { get; private set; }
     public MeiliSearch MeiliSearch { get; private set; }
 
@@ -42,17 +40,5 @@ public sealed record Sync : Entity<Guid>, ITrackableCreate, ITrackableUpdate, IT
     public void SetUpdatedOn()
     {
         UpdatedOn = DateTime.UtcNow;
-    }
-
-    public void SetDeletedOn()
-    {
-        Deleted = true;
-        DeletedOn = DateTime.UtcNow;
-    }
-
-    public void Recover()
-    {
-        Deleted = false;
-        DeletedOn = null;
     }
 }

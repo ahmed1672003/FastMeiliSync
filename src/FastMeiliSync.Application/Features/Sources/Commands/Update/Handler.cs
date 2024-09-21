@@ -24,14 +24,7 @@ internal sealed record UpdateSourceHandler : IRequestHandler<UpdateSourceCommand
                 cancellationToken: cancellationToken
             );
 
-            source.Update(
-                command.Label,
-                command.Host,
-                command.Port,
-                command.Database,
-                command.Url,
-                command.Type
-            );
+            source.Update(command.Label, command.Database, command.Url, command.Type);
 
             modifiedRows++;
             var sourceEntry = await _unitOfWork.Sources.UpdateAsync(source, cancellationToken);
@@ -43,7 +36,8 @@ internal sealed record UpdateSourceHandler : IRequestHandler<UpdateSourceCommand
                 {
                     StatusCode = (int)HttpStatusCode.OK,
                     Success = success,
-                    Result = sourceEntry.Entity
+                    Result = sourceEntry.Entity,
+                    Message = "operation done successfully"
                 };
             }
             await transaction.RollbackAsync(cancellationToken);

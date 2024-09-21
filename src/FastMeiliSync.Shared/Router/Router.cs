@@ -9,6 +9,7 @@ public static class Router
         public static class V1
         {
             public const string BASE_SOURCE_URL = $"{BASE_URL}/v1/source";
+            public const string Paginate = "paginate";
         }
     }
 
@@ -17,6 +18,7 @@ public static class Router
         public static class V1
         {
             public const string BASE_MEILISEARCH_URL = $"{BASE_URL}/v1/meilisearch";
+            public const string Paginate = "paginate";
         }
     }
 
@@ -25,6 +27,7 @@ public static class Router
         public static class V1
         {
             public const string BASE_SYNC_URL = $"{BASE_URL}/v1/sync";
+            public const string Paginate = "paginate";
         }
     }
 }

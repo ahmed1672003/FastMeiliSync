@@ -10,5 +10,6 @@ public sealed class SourceModule : ICarterModule
         groupe.MapPut(string.Empty, SourceEndpoints.HandleUpdateAsync);
         groupe.MapDelete(string.Empty, handler: SourceEndpoints.HandleDeleteByIdAsync);
         groupe.MapGet(string.Empty, SourceEndpoints.HandleGetByIdAsync);
+        groupe.MapGet(Router.SourceRoutes.V1.Paginate, SourceEndpoints.HandlePaginateAsync);
     }
 }

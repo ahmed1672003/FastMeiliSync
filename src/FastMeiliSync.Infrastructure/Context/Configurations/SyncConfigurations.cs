@@ -11,6 +11,6 @@ internal sealed class SyncConfigurations : IEntityTypeConfiguration<Sync>
         builder.Property(x => x.SourceId).IsRequired(true);
         builder.HasIndex(x => new { x.SourceId, x.MeiliSearchId }).IsUnique(true);
         builder.HasIndex(x => x.Label).IsUnique(true);
-        builder.HasQueryFilter(x => !x.Deleted);
+        // builder.HasQueryFilter(x => !x.Deleted);
     }
 }

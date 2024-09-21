@@ -1,9 +1,28 @@
-﻿namespace FastMeiliSync.Application.Features.MeiliSearches.Commands.Delete;
+﻿using FastMeiliSync.Shared.ValidationMessages;
 
-internal class DeleteMeiliSearchByIdValidator : AbstractValidator<DeleteMeiliSearchByIdCommand>
+namespace FastMeiliSync.Application.Features.MeiliSearches.Commands.Delete;
+
+public sealed class DeleteMeiliSearchByIdValidator : AbstractValidator<DeleteMeiliSearchByIdCommand>
 {
-    public DeleteMeiliSearchByIdValidator()
+    private readonly IServiceProvider _serviceProvider;
+
+    public DeleteMeiliSearchByIdValidator(IServiceProvider serviceProvider)
     {
-        // write validation
+        _serviceProvider = serviceProvider;
+        var scope = _serviceProvider.CreateScope();
+        var unitOfWork = scope.ServiceProvider.GetRequiredService<IMeiliSyncUnitOfWork>();
+        ValidateReques(unitOfWork);
+    }
+
+    void ValidateReques(IMeiliSyncUnitOfWork unitOfWork)
+    {
+        RuleFor(x => x)
+            .MustAsync(
+                async (req, cancellationToken) =>
+                {
+                    return await unitOfWork.MeiliSearches.AnyAsync(x => x.Id == req.Id);
+                }
+            )
+            .WithMessage(x => ValidationMessages.MeiliSearch.InstanceNotFound);
     }
 }

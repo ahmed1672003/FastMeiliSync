@@ -5,14 +5,19 @@ public class Program
     public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        builder.Services.AddAuthorization();
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
-        builder.Services.AddScoped<GlobalExceptionHandler>();
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
         builder.Services.AddHttpClient();
         builder.Services.AddCarter();
+        builder.Services.AddCors(cfg =>
+        {
+            cfg.AddPolicy(
+                "All",
+                options =>
+                {
+                    options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+                }
+            );
+        });
         builder
             .Services.RegisterApplicationDepenedncies(builder.Configuration)
             .RegiserInfrastructureDependencies(builder.Configuration);
@@ -40,6 +45,7 @@ public class Program
                     ),
                 };
             });
+        builder.Services.AddScoped<GlobalExceptionHandler>();
         builder.Services.AddAuthorization();
 
         builder.Services.AddSwaggerGen(options =>
@@ -51,13 +57,18 @@ public class Program
                 "v1",
                 new()
                 {
-                    Title = "meili sync api",
+                    Title = "meili sync",
                     Version = "1.0.0",
                     Contact = new OpenApiContact()
                     {
                         Email = "ahmed.adel.elsayed.ali.basha@gmail.com",
                         Name = "ahmed adel"
-                    }
+                    },
+                    License = new OpenApiLicense()
+                    {
+                        Name = "Apache-2.0 License",
+                        Url = new("http://www.apache.org/licenses/")
+                    },
                 }
             );
             options.EnableAnnotations();
@@ -92,7 +103,7 @@ public class Program
         });
 
         var app = builder.Build();
-
+        app.UseCors("All");
         app.UseMiddleware<GlobalExceptionHandler>();
         app.UseSwagger();
         app.UseSwaggerUI();

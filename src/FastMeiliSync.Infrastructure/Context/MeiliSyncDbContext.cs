@@ -5,11 +5,6 @@ public sealed class MeiliSyncDbContext : DbContext, IMeiliSyncDbContext
     public MeiliSyncDbContext(DbContextOptions<MeiliSyncDbContext> options)
         : base(options) { }
 
-    static MeiliSyncDbContext()
-    {
-        NpgsqlConnection.GlobalTypeMapper.EnableDynamicJson();
-    }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

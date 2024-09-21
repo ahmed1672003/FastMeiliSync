@@ -10,7 +10,8 @@ public static class Registeration
         services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly())
         );
-        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+        services.AddValidatorsFromAssembly(typeof(Registeration).Assembly);
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
         return services;

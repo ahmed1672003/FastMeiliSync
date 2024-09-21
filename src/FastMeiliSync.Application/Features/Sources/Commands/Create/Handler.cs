@@ -31,7 +31,8 @@ internal sealed record CreateSourceCommandHandler : IRequestHandler<CreateSource
                 {
                     StatusCode = (int)HttpStatusCode.OK,
                     Success = success,
-                    Result = sourceEntry.Entity
+                    Result = sourceEntry.Entity,
+                    Message = "operation done successfully"
                 };
             }
             await transaction.RollbackAsync(cancellationToken);

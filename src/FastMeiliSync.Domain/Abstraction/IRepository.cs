@@ -1,4 +1,4 @@
-﻿using FastMeiliSync.Domain.Base;
+﻿using FastMeiliSync.Shared.Enums;
 
 namespace FastMeiliSync.Domain.Abstraction;
 
@@ -18,14 +18,14 @@ public interface IRepository<TEntity, TId>
         TEntity entity,
         CancellationToken cancellationToken = default
     );
-    public Task<TEntity> GetByIdAsync(
+    Task<TEntity> GetByIdAsync(
         TId id,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includes = null,
         bool stopTracking = true,
         CancellationToken cancellationToken = default
     );
 
-    public Task<TResult?> GetAsync<TResult>(
+    Task<TResult?> GetAsync<TResult>(
         Expression<Func<TEntity, bool>> criteria,
         Expression<Func<TEntity, TResult>> selector = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includes = null,
@@ -33,11 +33,34 @@ public interface IRepository<TEntity, TId>
         CancellationToken cancellationToken = default
     );
 
-    public Task<IReadOnlyCollection<TResult>> GetQueryAsync<TResult>(
+    Task<IReadOnlyCollection<TResult>> GetAllAsync<TResult>(
         Expression<Func<TEntity, bool>> criteria = null,
         Expression<Func<TEntity, TResult>> selector = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includes = null,
         bool stopTracking = true,
         CancellationToken cancellationToken = default
+    );
+    Task<IReadOnlyCollection<TResult>> PaginateAsync<TResult>(
+        int pageNumber,
+        int pageSize,
+        Expression<Func<TEntity, object>> orderBy,
+        OrderByDirection orderByDirection = OrderByDirection.Ascending,
+        bool orderBeforPagination = true,
+        Expression<Func<TEntity, bool>> criteria = null,
+        Expression<Func<TEntity, TResult>> selector = null,
+        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includes = null,
+        bool stopTracking = true,
+        CancellationToken cancellationToken = default
+    );
+
+    Task<int> CountAsync(
+        Expression<Func<TEntity, bool>> filter = null,
+        CancellationToken cancellationToken = default
+    );
+    Task<bool> AnyAsync(
+        Expression<Func<TEntity, bool>> filter = null,
+        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includes = null,
+        bool skipQueryFilter = false,
+        CancellationToken cancellationToke = default
     );
 }

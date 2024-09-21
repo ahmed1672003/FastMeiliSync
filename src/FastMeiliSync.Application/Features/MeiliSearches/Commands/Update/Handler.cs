@@ -38,7 +38,8 @@ internal class UpdateMeiliSearchHandler(IMeiliSyncUnitOfWork unitOfWork)
                 {
                     Success = success,
                     Result = meiliSearchEntry.Entity,
-                    StatusCode = (int)HttpStatusCode.OK
+                    StatusCode = (int)HttpStatusCode.OK,
+                    Message = "operation done successfully"
                 };
             }
             await tranasction.RollbackAsync(cancellationToken);

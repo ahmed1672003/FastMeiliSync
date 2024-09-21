@@ -24,7 +24,7 @@ internal sealed record GetMeiliSearchByIdHandler(IMeiliSyncUnitOfWork unitOfWork
             {
                 StatusCode = (int)HttpStatusCode.OK,
                 Success = !default(bool),
-                Result = meiliSearch
+                Result = meiliSearch,
             };
         }
     }

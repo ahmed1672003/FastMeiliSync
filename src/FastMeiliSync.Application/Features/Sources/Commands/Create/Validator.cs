@@ -1,9 +1,18 @@
 using FastMeiliSync.Application.Features.Sources.Commands.Create;
 
-public class CreateSourceValidator : AbstractValidator<CreateSourceCommand>
+public sealed class CreateSourceValidator : AbstractValidator<CreateSourceCommand>
 {
-    public CreateSourceValidator()
+    private readonly IServiceProvider _serviceProvider;
+
+    public CreateSourceValidator(IServiceProvider serviceProvider)
     {
-        RuleFor(x => x.Label).NotEmpty();
+        _serviceProvider = serviceProvider;
+        var scope = _serviceProvider.CreateScope();
+        ValidateRequest(scope.ServiceProvider.GetRequiredService<IMeiliSyncUnitOfWork>());
+    }
+
+    void ValidateRequest(IMeiliSyncUnitOfWork unitOfWork)
+    {
+        //  RuleFor(x => x.Database).NotEmpty().WithMessage().NotNull();
     }
 }

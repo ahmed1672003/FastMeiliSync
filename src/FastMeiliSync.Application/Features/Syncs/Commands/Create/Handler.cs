@@ -30,7 +30,8 @@ internal sealed record CreateSyncCommandHandler(IMeiliSyncUnitOfWork unitOfWork)
                 {
                     StatusCode = (int)HttpStatusCode.OK,
                     Success = success,
-                    Result = syncEntry.Entity
+                    Result = syncEntry.Entity,
+                    Message = "operation done successfully"
                 };
             }
             await transaction.RollbackAsync(cancellationToken);

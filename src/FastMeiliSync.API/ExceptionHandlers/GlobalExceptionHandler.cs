@@ -1,4 +1,6 @@
-﻿namespace FastMeiliSync.API.ExceptionHandlers;
+﻿using FluentValidation;
+
+namespace FastMeiliSync.API.ExceptionHandlers;
 
 public sealed class GlobalExceptionHandler : IMiddleware
 {
@@ -10,16 +12,27 @@ public sealed class GlobalExceptionHandler : IMiddleware
         }
         catch (Exception ex)
         {
-            var statusCode = (int)HttpStatusCode.InternalServerError;
+            var requestStatus = GetRequestStatus(ex);
             var resposne = new Response
             {
-                Message = "Oops!! something error",
-                StatusCode = statusCode,
-                Success = default(bool)
+                Message = requestStatus.Message,
+                StatusCode = requestStatus.StatusCode,
+                Success = false
             };
-            context.Response.StatusCode = statusCode;
+            context.Response.StatusCode = requestStatus.StatusCode;
             context.Response.ContentType = "application/json";
             await context.Response.WriteAsync(JsonSerializer.Serialize(resposne));
+        }
+    }
+
+    public (int StatusCode, string Message) GetRequestStatus(Exception ex)
+    {
+        switch (ex)
+        {
+            case ValidationException:
+                return ((int)HttpStatusCode.BadRequest, ex.Message);
+            default:
+                return ((int)HttpStatusCode.InternalServerError, "Oops!! something error");
         }
     }
 }

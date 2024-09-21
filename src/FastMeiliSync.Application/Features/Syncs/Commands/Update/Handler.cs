@@ -37,7 +37,8 @@ internal class UpdateSyncCommandHandler(IMeiliSyncUnitOfWork unitOfWork)
                 {
                     Success = success,
                     Result = syncEntry.Entity,
-                    StatusCode = (int)HttpStatusCode.OK
+                    StatusCode = (int)HttpStatusCode.OK,
+                    Message = "operation done successfully"
                 };
             }
 

@@ -32,7 +32,8 @@ internal class DeleteSourceByIdHandler : IRequestHandler<DeleteSourceByIdCommand
                 return new Response
                 {
                     Success = !default(bool),
-                    StatusCode = (int)HttpStatusCode.NoContent
+                    StatusCode = (int)HttpStatusCode.OK,
+                    Message = "operation done successfully"
                 };
             }
             await tranasction.RollbackAsync(cancellationToken);

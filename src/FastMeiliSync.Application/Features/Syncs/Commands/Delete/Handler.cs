@@ -27,7 +27,12 @@ internal sealed record DeleteSyncByIdHandler(IMeiliSyncUnitOfWork unitOfWork)
             if (success)
             {
                 await transaction.CommitAsync(cancellationToken);
-                return new Response { StatusCode = (int)HttpStatusCode.OK, Success = success };
+                return new Response
+                {
+                    StatusCode = (int)HttpStatusCode.OK,
+                    Success = success,
+                    Message = "operation done successfully"
+                };
             }
             await transaction.RollbackAsync(cancellationToken);
             throw new DatabaseTransactionException();

@@ -11,6 +11,15 @@ public interface IMeiliSyncUnitOfWork : IAsyncDisposable, IDisposable
     ITableRepository Tables { get; }
     ITableSourceRepository TableSources { get; }
 
+    /*
+     
+     
+     Isolation Level:
+        Read Commited
+        Rea
+    
+     */
+
     Task<bool> SaveChangesAsync(int modifiedRows, CancellationToken cancellationToken = default);
     Task<IDbContextTransaction> BeginTransactionAsync(
         IsolationLevel isolationLevel = IsolationLevel.ReadCommitted,

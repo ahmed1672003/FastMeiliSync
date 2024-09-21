@@ -1,4 +1,8 @@
-﻿namespace FastMeiliSync.API.MeiliSearches.Endpoints.V1;
+﻿using FastMeiliSync.Application.Features.MeiliSearches.Queries.Paginate;
+using FastMeiliSync.Shared.Enums;
+using static FastMeiliSync.Application.Features.MeiliSearches.Queries.Paginate.PaginateMeiliSearchQuery;
+
+namespace FastMeiliSync.API.MeiliSearches.Endpoints.V1;
 
 public sealed class MeiliSearchEndpoints
 {
@@ -86,6 +90,19 @@ public sealed class MeiliSearchEndpoints
     ) => Results.Ok(await sender.Send(command, cancellationToken));
 
     /// <summary>
+    /// delete meili~search instance
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="sender"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public static async Task<IResult> HandleDeleteByIdAsync(
+        Guid id,
+        ISender sender,
+        CancellationToken cancellationToken = default
+    ) => Results.Ok(await sender.Send(new DeleteMeiliSearchByIdCommand(id), cancellationToken));
+
+    /// <summary>
     /// get specific meili-search instance
     /// </summary>
     /// <param name="id"></param>
@@ -99,15 +116,38 @@ public sealed class MeiliSearchEndpoints
     ) => Results.Ok(await sender.Send(new GetMeiliSearchByIdQuery(id), cancellationToken));
 
     /// <summary>
-    /// delete meili~search instance
+    ///  paginate meili-search instances
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <param name="search"></param>
+    /// <param name="orderBeforPagination"></param>
+    /// <param name="orderBy"></param>
+    /// <param name="orderByDirection"></param>
     /// <param name="sender"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static async Task<IResult> HandleDeleteByIdAsync(
-        Guid id,
+    public static async Task<IResult> HandlePaginateAsync(
         ISender sender,
+        int pageNumber = 1,
+        int pageSize = 10,
+        string search = "",
+        bool orderBeforPagination = true,
+        MeiliSearchOrderBy orderBy = MeiliSearchOrderBy.CreatedOn,
+        OrderByDirection orderByDirection = OrderByDirection.Ascending,
         CancellationToken cancellationToken = default
-    ) => Results.Ok(await sender.Send(new DeleteMeiliSearchByIdCommand(id), cancellationToken));
+    ) =>
+        Results.Ok(
+            await sender.Send(
+                new PaginateMeiliSearchQuery(
+                    pageNumber,
+                    pageSize,
+                    search,
+                    orderBeforPagination,
+                    orderBy,
+                    orderByDirection
+                ),
+                cancellationToken
+            )
+        );
 }

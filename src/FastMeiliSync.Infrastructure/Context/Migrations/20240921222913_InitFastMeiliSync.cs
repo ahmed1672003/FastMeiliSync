@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -25,9 +24,7 @@ namespace FastMeiliSync.Infrastructure.Context.Migrations
                     Url = table.Column<string>(type: "text", nullable: false),
                     ApiKey = table.Column<string>(type: "text", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    Deleted = table.Column<bool>(type: "boolean", nullable: false)
+                    UpdatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -41,17 +38,11 @@ namespace FastMeiliSync.Infrastructure.Context.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Label = table.Column<string>(type: "text", nullable: false),
-                    Host = table.Column<string>(type: "text", nullable: true),
-                    UserId = table.Column<string>(type: "text", nullable: false),
-                    Port = table.Column<int>(type: "integer", nullable: true),
                     Database = table.Column<string>(type: "text", nullable: true),
                     Url = table.Column<string>(type: "text", nullable: true),
                     Type = table.Column<int>(type: "integer", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    Deleted = table.Column<bool>(type: "boolean", nullable: false),
-                    Configurations = table.Column<IReadOnlyDictionary<string, string>>(type: "jsonb", nullable: false)
+                    UpdatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -68,9 +59,7 @@ namespace FastMeiliSync.Infrastructure.Context.Migrations
                     SourceId = table.Column<Guid>(type: "uuid", nullable: false),
                     MeiliSearchId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    Deleted = table.Column<bool>(type: "boolean", nullable: false)
+                    UpdatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -96,6 +85,34 @@ namespace FastMeiliSync.Infrastructure.Context.Migrations
                 schema: "Public",
                 table: "MeiliSearche",
                 column: "Label",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MeiliSearche_Url",
+                schema: "Public",
+                table: "MeiliSearche",
+                column: "Url",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Source_Database",
+                schema: "Public",
+                table: "Source",
+                column: "Database",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Source_Label",
+                schema: "Public",
+                table: "Source",
+                column: "Label",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Source_Url",
+                schema: "Public",
+                table: "Source",
+                column: "Url",
                 unique: true);
 
             migrationBuilder.CreateIndex(

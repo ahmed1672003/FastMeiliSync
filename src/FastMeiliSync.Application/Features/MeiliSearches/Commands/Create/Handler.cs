@@ -34,6 +34,7 @@ internal sealed record CreateMeiliSaerchHandler(IMeiliSyncUnitOfWork unitOfWork)
                     Success = success,
                     Result = meiliSearchEntry.Entity,
                     StatusCode = (int)HttpStatusCode.OK,
+                    Message = "operation done successfully"
                 };
             }
             await transaction.RollbackAsync(cancellationToken);

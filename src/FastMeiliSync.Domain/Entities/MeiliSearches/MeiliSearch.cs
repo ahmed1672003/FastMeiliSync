@@ -1,10 +1,6 @@
 ﻿namespace FastMeiliSync.Domain.Entities.MeiliSearches;
 
-public sealed record MeiliSearch
-    : Entity<Guid>,
-        ITrackableCreate,
-        ITrackableUpdate,
-        ITrackableDelete
+public sealed record MeiliSearch : Entity<Guid>, ITrackableCreate, ITrackableUpdate
 {
     private readonly List<Sync> _syncs = new();
 
@@ -23,8 +19,6 @@ public sealed record MeiliSearch
     public string ApiKey { get; private set; }
     public DateTime CreatedOn { get; private set; }
     public DateTime? UpdatedOn { get; private set; }
-    public DateTime? DeletedOn { get; private set; }
-    public bool Deleted { get; private set; }
 
     public IReadOnlyCollection<Sync> Syncs => _syncs;
 
@@ -48,17 +42,5 @@ public sealed record MeiliSearch
     public void SetUpdatedOn()
     {
         UpdatedOn = DateTime.UtcNow;
-    }
-
-    public void SetDeletedOn()
-    {
-        Deleted = true;
-        DeletedOn = DateTime.UtcNow;
-    }
-
-    public void Recover()
-    {
-        Deleted = false;
-        DeletedOn = null;
     }
 }

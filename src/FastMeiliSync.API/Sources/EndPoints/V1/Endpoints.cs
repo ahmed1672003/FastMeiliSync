@@ -1,4 +1,8 @@
-﻿namespace FastMeiliSync.API.Sources.EndPoints.V1;
+﻿using FastMeiliSync.Application.Features.MeiliSearches.Queries.Paginate;
+using FastMeiliSync.Shared.Enums;
+using static FastMeiliSync.Application.Features.MeiliSearches.Queries.Paginate.PaginateSourceQuery;
+
+namespace FastMeiliSync.API.Sources.EndPoints.V1;
 
 public sealed class SourceEndpoints
 {
@@ -10,29 +14,11 @@ public sealed class SourceEndpoints
     ///
     ///     {
     ///       "label": "meili sync",
-    ///       "user": "postgres",
-    ///       "host": "localhost",
-    ///       "port": 3000,
-    ///       "database": "meilisync",
-    ///       "type": 0,
-    ///       "configurations": {
-    ///         "sslmode": "prefer",
-    ///         "timeout": "30"
-    ///       }
-    ///     }
-    ///
-    ///     Required Fields: [label , user , host , port , database , type]
-    ///
-    /// Second request:
-    ///
-    ///     {
-    ///       "label": "meili sync",
     ///       "type": 0,
     ///       "url": "Data Source=SQL5111.site4now.net;Initial Catalog=db_a9f9f8_masa;User Id=db_a9f9f8_masa_admin;Password=ahmedadel2102023"
     ///     }
     ///
     ///     Required Fields: [label , type , url]
-    ///
     ///
     /// Response:
     ///
@@ -44,6 +30,7 @@ public sealed class SourceEndpoints
     ///         "id": "16f29533-ab82-457a-85e8-e74e549e649e",
     ///         "label": "meili sync",
     ///         "connectionString": "Data Source=SQL5111.site4now.net;Initial Catalog=db_a9f9f8_masa;User Id=db_a9f9f8_masa_admin;Password=ahmedadel2102023"
+    ///         "createdOn": "2024-09-15T21:29:55.3645185Z"
     ///       }
     ///     }
     /// </remarks>
@@ -61,25 +48,8 @@ public sealed class SourceEndpoints
     /// update data base source
     /// </summary>
     /// <remarks>
+    ///
     /// First request:
-    ///
-    ///     {
-    ///       "id": "16f29533-ab82-457a-85e8-e74e549e649e",
-    ///       "label": "meili sync",
-    ///       "user": "postgres",
-    ///       "host": "localhost",
-    ///       "port": 3000,
-    ///       "database": "meilisync",
-    ///       "type": 0,
-    ///       "configurations": {
-    ///         "sslmode": "prefer",
-    ///         "timeout": "30"
-    ///       }
-    ///     }
-    ///
-    ///     Required Fields: [id, label , user , host , port , database , type]
-    ///
-    /// Second request:
     ///
     ///     {
     ///       "id": "16f29533-ab82-457a-85e8-e74e549e649e",
@@ -89,7 +59,6 @@ public sealed class SourceEndpoints
     ///     }
     ///
     ///     Required Fields: [id, label , type , url]
-    ///
     ///
     /// Response:
     ///
@@ -101,6 +70,7 @@ public sealed class SourceEndpoints
     ///         "id": "16f29533-ab82-457a-85e8-e74e549e649e",
     ///         "label": "meili sync",
     ///         "connectionString": "Data Source=SQL5111.site4now.net;Initial Catalog=db_a9f9f8_masa;User Id=db_a9f9f8_masa_admin;Password=ahmedadel2102023"
+    ///         "createdOn": "2024-09-15T21:29:55.3645185Z"
     ///       }
     ///     }
     /// </remarks>
@@ -113,6 +83,19 @@ public sealed class SourceEndpoints
         ISender sender,
         CancellationToken cancellationToken = default
     ) => Results.Ok(await sender.Send(command, cancellationToken));
+
+    /// <summary>
+    /// delete specific data base source
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="sender"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public static async Task<IResult> HandleDeleteByIdAsync(
+        Guid id,
+        ISender sender,
+        CancellationToken cancellationToken = default
+    ) => Results.Ok(await sender.Send(new DeleteSourceByIdCommand(id), cancellationToken));
 
     /// <summary>
     /// get specific data base source
@@ -128,15 +111,38 @@ public sealed class SourceEndpoints
     ) => Results.Ok(await sender.Send(new GetSourceByIdQuery(id), cancellationToken));
 
     /// <summary>
-    /// delete specific data base source
+    /// paginate sources
     /// </summary>
-    /// <param name="id"></param>
     /// <param name="sender"></param>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <param name="search"></param>
+    /// <param name="orderBeforPagination"></param>
+    /// <param name="orderBy"></param>
+    /// <param name="orderByDirection"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static async Task<IResult> HandleDeleteByIdAsync(
-        Guid id,
+    public static async Task<IResult> HandlePaginateAsync(
         ISender sender,
+        int pageNumber = 1,
+        int pageSize = 10,
+        string search = "",
+        bool orderBeforPagination = true,
+        SourceOrderBy orderBy = SourceOrderBy.CreatedOn,
+        OrderByDirection orderByDirection = OrderByDirection.Ascending,
         CancellationToken cancellationToken = default
-    ) => Results.Ok(await sender.Send(new DeleteSourceByIdCommand(id), cancellationToken));
+    ) =>
+        Results.Ok(
+            await sender.Send(
+                new PaginateSourceQuery(
+                    pageNumber,
+                    pageSize,
+                    search,
+                    orderBeforPagination,
+                    orderBy,
+                    orderByDirection
+                ),
+                cancellationToken
+            )
+        );
 }
