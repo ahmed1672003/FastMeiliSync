@@ -57,7 +57,7 @@ public class Program
                 "v1",
                 new()
                 {
-                    Title = "meili sync",
+                    Title = "fast meili sync",
                     Version = "1.0.0",
                     Contact = new OpenApiContact()
                     {
