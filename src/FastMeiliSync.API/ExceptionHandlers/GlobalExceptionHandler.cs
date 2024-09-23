@@ -4,6 +4,10 @@ namespace FastMeiliSync.API.ExceptionHandlers;
 
 public sealed class GlobalExceptionHandler : IMiddleware
 {
+    readonly ILogger<GlobalExceptionHandler> _logger;
+
+    public GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) => _logger = logger;
+
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
         try
@@ -12,6 +16,7 @@ public sealed class GlobalExceptionHandler : IMiddleware
         }
         catch (Exception ex)
         {
+            _logger.LogError($"Un handeld exception accured: {ex.Message}");
             var requestStatus = GetRequestStatus(ex);
             var resposne = new Response
             {

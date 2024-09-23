@@ -4,5 +4,8 @@ public enum Tables
 {
     MeiliSearche,
     Source,
-    Sync
+    Sync,
+    Role,
+    User,
+    UserRole
 }

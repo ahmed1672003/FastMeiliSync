@@ -11,6 +11,5 @@ internal sealed class MeiliSearchConfiguration : IEntityTypeConfiguration<MeiliS
         builder.Property(x => x.Label).IsRequired(true);
         builder.HasIndex(x => x.Label).IsUnique(true);
         builder.HasIndex(x => x.Url).IsUnique(true);
-        //builder.HasQueryFilter(x => !x.Deleted);
     }
 }

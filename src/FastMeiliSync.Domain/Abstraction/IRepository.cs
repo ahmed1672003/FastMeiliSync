@@ -1,6 +1,4 @@
-﻿using FastMeiliSync.Shared.Enums;
-
-namespace FastMeiliSync.Domain.Abstraction;
+﻿namespace FastMeiliSync.Domain.Abstraction;
 
 public interface IRepository<TEntity, TId>
     where TEntity : Entity<TId>

@@ -36,7 +36,10 @@ public static class Registeration
             .AddScoped<ISyncRepository, SyncRepository>()
             .AddScoped<ISourceRepository, SourceRepository>()
             .AddScoped<ITableRepository, TableRepository>()
-            .AddScoped<ITableSourceRepository, TableSourceRepository>();
+            .AddScoped<ITableSourceRepository, TableSourceRepository>()
+            .AddScoped<IUserRepository, UserRepository>()
+            .AddScoped<IUserRoleRepository, UserRoleRepository>()
+            .AddScoped<IRoleRepository, RoleRepository>();
         services
             .AddScoped<IIndexService, IndexService>()
             .AddScoped<IDocumentService, DocumentService>();

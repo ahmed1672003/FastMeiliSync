@@ -10,6 +10,5 @@ public class SourceConfigurations : IEntityTypeConfiguration<Source>
         builder.HasIndex(x => x.Label).IsUnique(true);
         builder.HasIndex(x => x.Url).IsUnique(true);
         builder.HasIndex(x => x.Database).IsUnique(true);
-        //  builder.HasQueryFilter(x => !x.Deleted);
     }
 }

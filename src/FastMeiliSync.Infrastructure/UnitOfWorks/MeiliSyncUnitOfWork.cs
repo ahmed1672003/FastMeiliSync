@@ -10,7 +10,10 @@ public class MeiliSyncUnitOfWork : IMeiliSyncUnitOfWork
         ISourceRepository sources,
         ISyncRepository syncs,
         ITableRepository tables,
-        ITableSourceRepository tableSources
+        ITableSourceRepository tableSources,
+        IRoleRepository roles,
+        IUserRepository users,
+        IUserRoleRepository usersRoles
     )
     {
         _context = context;
@@ -19,6 +22,9 @@ public class MeiliSyncUnitOfWork : IMeiliSyncUnitOfWork
         Syncs = syncs;
         Tables = tables;
         TableSources = tableSources;
+        Roles = roles;
+        Users = users;
+        UsersRoles = usersRoles;
     }
 
     public IMeiliSearchRepository MeiliSearches { get; }
@@ -26,6 +32,9 @@ public class MeiliSyncUnitOfWork : IMeiliSyncUnitOfWork
     public ISyncRepository Syncs { get; }
     public ITableRepository Tables { get; }
     public ITableSourceRepository TableSources { get; }
+    public IRoleRepository Roles { get; }
+    public IUserRepository Users { get; }
+    public IUserRoleRepository UsersRoles { get; }
 
     public Task<bool> SaveChangesAsync(
         int modifiedRows,

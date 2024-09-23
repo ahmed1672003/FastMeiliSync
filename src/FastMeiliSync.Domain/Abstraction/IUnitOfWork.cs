@@ -1,5 +1,8 @@
-﻿using FastMeiliSync.Domain.Entities.Tables;
+﻿using FastMeiliSync.Domain.Entities.Roles;
+using FastMeiliSync.Domain.Entities.Tables;
 using FastMeiliSync.Domain.Entities.TableSources;
+using FastMeiliSync.Domain.Entities.Users;
+using FastMeiliSync.Domain.Entities.UsersRoles;
 
 namespace FastMeiliSync.Domain.Abstraction;
 
@@ -10,15 +13,9 @@ public interface IMeiliSyncUnitOfWork : IAsyncDisposable, IDisposable
     ISyncRepository Syncs { get; }
     ITableRepository Tables { get; }
     ITableSourceRepository TableSources { get; }
-
-    /*
-     
-     
-     Isolation Level:
-        Read Commited
-        Rea
-    
-     */
+    IRoleRepository Roles { get; }
+    IUserRepository Users { get; }
+    IUserRoleRepository UsersRoles { get; }
 
     Task<bool> SaveChangesAsync(int modifiedRows, CancellationToken cancellationToken = default);
     Task<IDbContextTransaction> BeginTransactionAsync(
