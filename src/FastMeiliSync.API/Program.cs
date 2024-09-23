@@ -8,6 +8,7 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddHttpClient();
         builder.Services.AddCarter();
+
         builder.Services.AddCors(cfg =>
         {
             cfg.AddPolicy(
@@ -104,6 +105,7 @@ public class Program
 
         var app = builder.Build();
         app.UseCors("All");
+        app.UseStaticFiles();
         app.UseMiddleware<GlobalExceptionHandler>();
         app.UseSwagger();
         app.UseSwaggerUI();
