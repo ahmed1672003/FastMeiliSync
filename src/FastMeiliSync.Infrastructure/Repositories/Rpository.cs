@@ -1,6 +1,4 @@
-﻿using FastMeiliSync.Shared.Enums;
-
-namespace FastMeiliSync.Infrastructure.Repositories;
+﻿namespace FastMeiliSync.Infrastructure.Repositories;
 
 public class Repository<TEntity, TId> : IRepository<TEntity, TId>
     where TEntity : Entity<TId>
@@ -8,7 +6,7 @@ public class Repository<TEntity, TId> : IRepository<TEntity, TId>
 {
     readonly IMeiliSyncDbContext _context;
 
-    readonly DbSet<TEntity> _entities;
+    protected DbSet<TEntity> _entities;
 
     public Repository(IMeiliSyncDbContext meiliSyncDbContext)
     {
@@ -177,4 +175,6 @@ public class Repository<TEntity, TId> : IRepository<TEntity, TId>
 
         return await query.CountAsync(cancellationToken);
     }
+
+    public IQueryable<TEntity> Query() => _entities.AsQueryable();
 }

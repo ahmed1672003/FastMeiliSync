@@ -1,4 +1,7 @@
-﻿namespace FastMeiliSync.Application;
+﻿using FastMeiliSync.Domain.Entities.Users;
+using Microsoft.AspNetCore.Identity;
+
+namespace FastMeiliSync.Application;
 
 public static class Registeration
 {
@@ -13,6 +16,7 @@ public static class Registeration
 
         services.AddValidatorsFromAssembly(typeof(Registeration).Assembly);
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
         return services;
     }

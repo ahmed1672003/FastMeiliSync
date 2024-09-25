@@ -61,4 +61,5 @@ public interface IRepository<TEntity, TId>
         bool skipQueryFilter = false,
         CancellationToken cancellationToke = default
     );
+    IQueryable<TEntity> Query();
 }

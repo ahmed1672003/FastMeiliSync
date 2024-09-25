@@ -1,4 +1,4 @@
-﻿namespace FastMeiliSync.Application.Features.MeiliSearches.Queries.Paginate;
+﻿namespace FastMeiliSync.Application.Features.Syncs.Queries.Paginate;
 
 public sealed record PaginateSyncResult(
     Guid Id,

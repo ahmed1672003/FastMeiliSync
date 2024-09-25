@@ -1,4 +1,6 @@
-﻿namespace FastMeiliSync.Infrastructure.UnitOfWorks;
+﻿using FastMeiliSync.Domain.Entities.Tokens;
+
+namespace FastMeiliSync.Infrastructure.UnitOfWorks;
 
 public class MeiliSyncUnitOfWork : IMeiliSyncUnitOfWork
 {
@@ -13,7 +15,8 @@ public class MeiliSyncUnitOfWork : IMeiliSyncUnitOfWork
         ITableSourceRepository tableSources,
         IRoleRepository roles,
         IUserRepository users,
-        IUserRoleRepository usersRoles
+        IUserRoleRepository usersRoles,
+        ITokenRepository tokens
     )
     {
         _context = context;
@@ -25,6 +28,7 @@ public class MeiliSyncUnitOfWork : IMeiliSyncUnitOfWork
         Roles = roles;
         Users = users;
         UsersRoles = usersRoles;
+        Tokens = tokens;
     }
 
     public IMeiliSearchRepository MeiliSearches { get; }
@@ -35,6 +39,7 @@ public class MeiliSyncUnitOfWork : IMeiliSyncUnitOfWork
     public IRoleRepository Roles { get; }
     public IUserRepository Users { get; }
     public IUserRoleRepository UsersRoles { get; }
+    public ITokenRepository Tokens { get; }
 
     public Task<bool> SaveChangesAsync(
         int modifiedRows,

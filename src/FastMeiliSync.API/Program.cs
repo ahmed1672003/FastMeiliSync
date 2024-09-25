@@ -8,6 +8,7 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddHttpClient();
         builder.Services.AddCarter();
+        builder.Services.AddHttpContextAccessor();
 
         builder.Services.AddCors(cfg =>
         {
@@ -21,7 +22,8 @@ public class Program
         });
         builder
             .Services.RegisterApplicationDepenedncies(builder.Configuration)
-            .RegiserInfrastructureDependencies(builder.Configuration);
+            .RegiserInfrastructureDependencies(builder.Configuration)
+            .RegisterSharedDepenedncies(builder.Configuration);
         builder
             .Services.AddAuthentication(options =>
             {

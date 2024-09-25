@@ -4,6 +4,24 @@ public static class Router
 {
     const string BASE_URL = "meilisync/api";
 
+    public static class RoleRoutes
+    {
+        public static class V1
+        {
+            public const string BASE_ROLE_URL = $"{BASE_URL}/v1/role";
+            public const string Paginate = "paginate";
+        }
+    }
+
+    public static class UserRoutes
+    {
+        public static class V1
+        {
+            public const string BASE_ROLE_URL = $"{BASE_URL}/v1/role";
+            public const string Paginate = "paginate";
+        }
+    }
+
     public static class SourceRoutes
     {
         public static class V1

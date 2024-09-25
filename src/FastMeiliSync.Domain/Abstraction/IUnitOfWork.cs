@@ -1,6 +1,7 @@
 ﻿using FastMeiliSync.Domain.Entities.Roles;
 using FastMeiliSync.Domain.Entities.Tables;
 using FastMeiliSync.Domain.Entities.TableSources;
+using FastMeiliSync.Domain.Entities.Tokens;
 using FastMeiliSync.Domain.Entities.Users;
 using FastMeiliSync.Domain.Entities.UsersRoles;
 
@@ -16,6 +17,7 @@ public interface IMeiliSyncUnitOfWork : IAsyncDisposable, IDisposable
     IRoleRepository Roles { get; }
     IUserRepository Users { get; }
     IUserRoleRepository UsersRoles { get; }
+    ITokenRepository Tokens { get; }
 
     Task<bool> SaveChangesAsync(int modifiedRows, CancellationToken cancellationToken = default);
     Task<IDbContextTransaction> BeginTransactionAsync(

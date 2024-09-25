@@ -2,6 +2,8 @@
 
 public class ValidationMessages
 {
+    public const string Success = "operation done successfully";
+
     public static class MeiliSearch
     {
         public const string InstanceNotFound = "Meili search instance not found.";

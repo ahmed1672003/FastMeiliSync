@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
-using static FastMeiliSync.Application.Features.MeiliSearches.Queries.Paginate.PaginateSourceQuery;
+using static FastMeiliSync.Application.Features.Sources.Queries.Paginate.PaginateSourceQuery;
 
-namespace FastMeiliSync.Application.Features.MeiliSearches.Queries.Paginate;
+namespace FastMeiliSync.Application.Features.Sources.Queries.Paginate;
 
 internal sealed record PaginateSourceHandler(IMeiliSyncUnitOfWork unitOfWork)
     : IRequestHandler<PaginateSourceQuery, Response>
@@ -28,7 +28,7 @@ internal sealed record PaginateSourceHandler(IMeiliSyncUnitOfWork unitOfWork)
                 cancellationToken: cancellationToken
             );
 
-            var items = await unitOfWork.Sources.PaginateAsync<PaginateSourceResult>(
+            var items = await unitOfWork.Sources.PaginateAsync(
                 request.PageNumber,
                 request.PageSize,
                 orderBy,

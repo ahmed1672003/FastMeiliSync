@@ -1,5 +1,7 @@
-﻿using FastMeiliSync.Infrastructure.Context;
+﻿using FastMeiliSync.Domain.Entities.Tokens;
+using FastMeiliSync.Infrastructure.Context;
 using FastMeiliSync.Infrastructure.Context.Interceptors;
+using FastMeiliSync.Infrastructure.JWT;
 using FastMeiliSync.Infrastructure.Repositories;
 using FastMeiliSync.Infrastructure.SearchEngine.Document;
 using FastMeiliSync.Infrastructure.SearchEngine.Index;
@@ -39,10 +41,13 @@ public static class Registeration
             .AddScoped<ITableSourceRepository, TableSourceRepository>()
             .AddScoped<IUserRepository, UserRepository>()
             .AddScoped<IUserRoleRepository, UserRoleRepository>()
+            .AddScoped<ITokenRepository, TokenRepository>()
             .AddScoped<IRoleRepository, RoleRepository>();
+
         services
             .AddScoped<IIndexService, IndexService>()
-            .AddScoped<IDocumentService, DocumentService>();
+            .AddScoped<IDocumentService, DocumentService>()
+            .AddScoped<IJWTManager, JWTManager>();
         return services;
     }
 }

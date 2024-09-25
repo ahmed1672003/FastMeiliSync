@@ -21,6 +21,7 @@ global using FastMeiliSync.Domain.Entities.MeiliSearches;
 global using FastMeiliSync.Domain.Entities.Sources;
 global using FastMeiliSync.Domain.Entities.Syncs;
 global using FastMeiliSync.Infrastructure;
+global using FastMeiliSync.Shared;
 global using FastMeiliSync.Shared.BaseResponse;
 global using FastMeiliSync.Shared.Router;
 global using FastMeiliSync.Shared.Settings;

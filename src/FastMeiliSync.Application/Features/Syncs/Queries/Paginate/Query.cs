@@ -1,7 +1,7 @@
 ﻿using FastMeiliSync.Shared.Enums;
-using static FastMeiliSync.Application.Features.MeiliSearches.Queries.Paginate.PaginateSyncQuery;
+using static FastMeiliSync.Application.Features.Syncs.Queries.Paginate.PaginateSyncQuery;
 
-namespace FastMeiliSync.Application.Features.MeiliSearches.Queries.Paginate;
+namespace FastMeiliSync.Application.Features.Syncs.Queries.Paginate;
 
 public sealed record PaginateSyncQuery(
     int PageNumber = 1,

@@ -1,6 +1,6 @@
-﻿using FastMeiliSync.Application.Features.MeiliSearches.Queries.Paginate;
+﻿using FastMeiliSync.Application.Features.Syncs.Queries.Paginate;
 using FastMeiliSync.Shared.Enums;
-using static FastMeiliSync.Application.Features.MeiliSearches.Queries.Paginate.PaginateSyncQuery;
+using static FastMeiliSync.Application.Features.Syncs.Queries.Paginate.PaginateSyncQuery;
 
 namespace FastMeiliSync.API.Syncs.Endpoints.V1;
 

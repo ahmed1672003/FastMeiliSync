@@ -1,4 +1,6 @@
-﻿using FastMeiliSync.Domain.Entities.UsersRoles;
+﻿using FastMeiliSync.Domain.Entities.Tokens;
+using FastMeiliSync.Domain.Entities.UsersRoles;
+using Microsoft.AspNetCore.Identity;
 
 namespace FastMeiliSync.Domain.Entities.Users;
 
@@ -6,12 +8,11 @@ public sealed record User : Entity<Guid>, ITrackableCreate, ITrackableUpdate
 {
     private readonly List<UserRole> _userRoles = new();
 
-    private User(string name, string userName, string email, string hashedPassword)
+    private User(string name, string userName, string email)
     {
         Name = name;
         UserName = userName;
         Email = email;
-        HashedPassword = hashedPassword;
     }
 
     private User() { }
@@ -22,6 +23,7 @@ public sealed record User : Entity<Guid>, ITrackableCreate, ITrackableUpdate
     public string HashedPassword { get; private set; }
     public DateTime CreatedOn { get; private set; }
     public DateTime? UpdatedOn { get; private set; }
+    public Token Token { get; private set; }
 
     public IReadOnlyCollection<UserRole> UserRoles => _userRoles;
 
@@ -43,6 +45,16 @@ public sealed record User : Entity<Guid>, ITrackableCreate, ITrackableUpdate
         CreatedOn = DateTime.UtcNow;
     }
 
-    public static User Create(string name, string userName, string email, string hashedPassword) =>
-        new User(name, userName, email, hashedPassword);
+    public static User Create(string name, string userName, string email) =>
+        new User(name, userName, email);
+
+    public void AddToken(string token)
+    {
+        Token = Token.Create(token);
+    }
+
+    public void HashPassword(IPasswordHasher<User> passwordHasher, string password)
+    {
+        HashedPassword = passwordHasher.HashPassword(this, password);
+    }
 }

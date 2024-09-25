@@ -16,6 +16,8 @@ public sealed record Role : Entity<Guid>, ITrackableCreate, ITrackableUpdate
 
     public IReadOnlyCollection<UserRole> RoleUsers => _roleUsers;
 
+    public static Role Create(string Name) => new(Name);
+
     public void SetUpdatedOn()
     {
         UpdatedOn = DateTime.UtcNow;
