@@ -33,7 +33,7 @@ public sealed record DeleteUserCommandHandler(IMeiliSyncUnitOfWork unitOfWork)
             var success = await unitOfWork.SaveChangesAsync(modifiedRows, cancellationToken);
             if (success)
             {
-                await transaction.RollbackAsync(cancellationToken);
+                await transaction.CommitAsync(cancellationToken);
                 return new Response
                 {
                     Success = true,

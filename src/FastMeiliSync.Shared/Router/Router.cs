@@ -9,6 +9,7 @@ public static class Router
         public static class V1
         {
             public const string BASE_ROLE_URL = $"{BASE_URL}/v1/role";
+            public const string Seed = "seed";
             public const string Paginate = "paginate";
         }
     }
@@ -17,7 +18,10 @@ public static class Router
     {
         public static class V1
         {
-            public const string BASE_ROLE_URL = $"{BASE_URL}/v1/role";
+            public const string BASE_USER_URL = $"{BASE_URL}/v1/user";
+            public const string LogIn = "login";
+            public const string Seed = "seed";
+            public const string Logout = "logout";
             public const string Paginate = "paginate";
         }
     }

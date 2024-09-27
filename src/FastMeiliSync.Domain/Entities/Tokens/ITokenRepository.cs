@@ -1,3 +1,8 @@
-﻿namespace FastMeiliSync.Domain.Entities.Tokens;
+﻿using FastMeiliSync.Domain.Entities.Users;
 
-public interface ITokenRepository : IRepository<Token, Guid> { }
+namespace FastMeiliSync.Domain.Entities.Tokens;
+
+public interface ITokenRepository : IRepository<Token, Guid>
+{
+    Task DeactivateTokneAsync(User user, CancellationToken cancellationToken = default);
+}

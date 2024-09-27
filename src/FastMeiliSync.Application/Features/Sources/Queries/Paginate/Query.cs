@@ -8,7 +8,7 @@ public sealed record PaginateSourceQuery(
     string Search = "",
     bool OrderBeforPagination = true,
     SourceOrderBy OrderBy = SourceOrderBy.CreatedOn,
-    OrderByDirection OrderByDirection = OrderByDirection.Ascending
+    OrderByDirection OrderByDirection = OrderByDirection.Descending
 ) : IRequest<Response>
 {
     public enum SourceOrderBy

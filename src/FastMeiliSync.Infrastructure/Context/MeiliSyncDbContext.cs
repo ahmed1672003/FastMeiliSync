@@ -14,7 +14,11 @@ public sealed class MeiliSyncDbContext : DbContext, IMeiliSyncDbContext
     public async Task<bool> SaveChangesAsync(
         int modifiedRows,
         CancellationToken cancellationToken = default
-    ) => await SaveChangesAsync(cancellationToken) == modifiedRows;
+    )
+    {
+        var res = await SaveChangesAsync(cancellationToken);
+        return modifiedRows == res;
+    }
 
     public DbSet<TEntity> Set<TEntity>()
         where TEntity : class => base.Set<TEntity>();

@@ -68,7 +68,12 @@ public class Repository<TEntity, TId> : IRepository<TEntity, TId>
             query = includes(query);
 
         query = query.Where(criteria);
-        var result = query.Select(selector);
+        IQueryable<TResult> result;
+
+        if (selector != null)
+            result = query.Select(selector);
+        else
+            result = (IQueryable<TResult>)query;
         return result.FirstOrDefaultAsync(cancellationToken);
     }
 

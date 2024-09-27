@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using static FastMeiliSync.Application.Features.MeiliSearches.Queries.Paginate.PaginateMeiliSearchQuery;
+﻿using static FastMeiliSync.Application.Features.MeiliSearches.Queries.Paginate.PaginateMeiliSearchQuery;
 
 namespace FastMeiliSync.Application.Features.MeiliSearches.Queries.Paginate;
 

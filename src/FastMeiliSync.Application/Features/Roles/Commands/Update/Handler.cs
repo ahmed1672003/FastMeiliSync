@@ -1,12 +1,10 @@
-﻿using FastMeiliSync.Application.Features.Roles.Commands.Create;
-
-namespace FastMeiliSync.Application.Features.Roles.Commands.Update;
+﻿namespace FastMeiliSync.Application.Features.Roles.Commands.Update;
 
 internal sealed record UpdateRoleCommandHandler(IMeiliSyncUnitOfWork unitOfWork)
-    : IRequestHandler<CreateRoleCommand, Response>
+    : IRequestHandler<UpdateRoleCommand, Response>
 {
     public async Task<Response> Handle(
-        CreateRoleCommand request,
+        UpdateRoleCommand request,
         CancellationToken cancellationToken
     )
     {
@@ -18,7 +16,9 @@ internal sealed record UpdateRoleCommandHandler(IMeiliSyncUnitOfWork unitOfWork)
         )
         {
             var modifiedRows = 0;
-            Role role = request;
+            var role = await unitOfWork.Roles.GetByIdAsync(request.Id);
+
+            role.Update(role.Name);
 
             modifiedRows++;
             var roleEntry = await unitOfWork.Roles.UpdateAsync(role, cancellationToken);
@@ -27,7 +27,7 @@ internal sealed record UpdateRoleCommandHandler(IMeiliSyncUnitOfWork unitOfWork)
             if (success)
             {
                 await transaction.CommitAsync(cancellationToken);
-                return new ResponseOf<CreateRoleResult>
+                return new ResponseOf<UpdateRoleResult>
                 {
                     Success = true,
                     StatusCode = (int)HttpStatusCode.OK,

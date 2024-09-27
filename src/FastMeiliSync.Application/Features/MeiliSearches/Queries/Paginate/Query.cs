@@ -1,5 +1,4 @@
-﻿using FastMeiliSync.Shared.Enums;
-using static FastMeiliSync.Application.Features.MeiliSearches.Queries.Paginate.PaginateMeiliSearchQuery;
+﻿using static FastMeiliSync.Application.Features.MeiliSearches.Queries.Paginate.PaginateMeiliSearchQuery;
 
 namespace FastMeiliSync.Application.Features.MeiliSearches.Queries.Paginate;
 
@@ -9,7 +8,7 @@ public sealed record PaginateMeiliSearchQuery(
     string Search = "",
     bool OrderBeforPagination = true,
     MeiliSearchOrderBy OrderBy = MeiliSearchOrderBy.CreatedOn,
-    OrderByDirection OrderByDirection = OrderByDirection.Ascending
+    OrderByDirection OrderByDirection = OrderByDirection.Descending
 ) : IRequest<Response>
 {
     public enum MeiliSearchOrderBy

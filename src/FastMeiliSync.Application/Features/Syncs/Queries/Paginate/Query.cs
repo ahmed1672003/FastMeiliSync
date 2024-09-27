@@ -1,5 +1,4 @@
-﻿using FastMeiliSync.Shared.Enums;
-using static FastMeiliSync.Application.Features.Syncs.Queries.Paginate.PaginateSyncQuery;
+﻿using static FastMeiliSync.Application.Features.Syncs.Queries.Paginate.PaginateSyncQuery;
 
 namespace FastMeiliSync.Application.Features.Syncs.Queries.Paginate;
 
@@ -9,7 +8,7 @@ public sealed record PaginateSyncQuery(
     string Search = "",
     bool OrderBeforPagination = true,
     SyncOrderBy OrderBy = SyncOrderBy.CreatedOn,
-    OrderByDirection OrderByDirection = OrderByDirection.Ascending
+    OrderByDirection OrderByDirection = OrderByDirection.Descending
 ) : IRequest<Response>
 {
     public enum SyncOrderBy

@@ -9,7 +9,7 @@ public sealed record UserContext : IUserContext
     public UserContext(IHttpContextAccessor httpContextAccessor) =>
         _httpContextAccessor = httpContextAccessor;
 
-    public (Guid Id, bool Exist) UserId
+    public (Guid Value, bool Exist) UserId
     {
         get
         {

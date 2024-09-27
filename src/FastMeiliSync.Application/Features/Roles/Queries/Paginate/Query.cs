@@ -6,7 +6,7 @@ public sealed record PaginateRoleQuery(
     string Search = "",
     bool OrderBeforPagination = true,
     RoleOrderBy OrderBy = RoleOrderBy.CreatedOn,
-    OrderByDirection OrderByDirection = OrderByDirection.Ascending
+    OrderByDirection OrderByDirection = OrderByDirection.Descending
 ) : IRequest<Response>
 {
     public enum RoleOrderBy

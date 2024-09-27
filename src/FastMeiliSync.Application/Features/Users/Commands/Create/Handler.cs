@@ -1,5 +1,4 @@
-﻿using FastMeiliSync.Domain.Entities.Users;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace FastMeiliSync.Application.Features.Users.Commands.Create;
 
@@ -34,12 +33,17 @@ public sealed record CreateUserCommandHandler(
             {
                 await transaction.CommitAsync(cancellationToken);
 
+                user = await unitOfWork.Users.GetByIdAsync(
+                    user.Id,
+                    u => u.Include(x => x.UserRoles).ThenInclude(x => x.Role),
+                    cancellationToken: cancellationToken
+                );
                 return new ResponseOf<CreateUserResult>
                 {
                     Success = success,
                     Message = ValidationMessages.Success,
                     StatusCode = (int)HttpStatusCode.OK,
-                    Result = userEntry.Entity
+                    Result = user
                 };
             }
             await transaction.RollbackAsync(cancellationToken);

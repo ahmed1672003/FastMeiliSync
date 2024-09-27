@@ -2,5 +2,5 @@
 
 public interface IUserContext
 {
-    (Guid Id, bool Exist) UserId { get; }
+    (Guid Value, bool Exist) UserId { get; }
 }

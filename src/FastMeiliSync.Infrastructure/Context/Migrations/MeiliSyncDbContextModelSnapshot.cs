@@ -155,6 +155,33 @@ namespace FastMeiliSync.Infrastructure.Context.Migrations
                     b.ToTable("Sync", "Public");
                 });
 
+            modelBuilder.Entity("FastMeiliSync.Domain.Entities.Tokens.Token", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Token");
+                });
+
             modelBuilder.Entity("FastMeiliSync.Domain.Entities.Users.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -241,6 +268,17 @@ namespace FastMeiliSync.Infrastructure.Context.Migrations
                     b.Navigation("Source");
                 });
 
+            modelBuilder.Entity("FastMeiliSync.Domain.Entities.Tokens.Token", b =>
+                {
+                    b.HasOne("FastMeiliSync.Domain.Entities.Users.User", "User")
+                        .WithOne("Token")
+                        .HasForeignKey("FastMeiliSync.Domain.Entities.Tokens.Token", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("FastMeiliSync.Domain.Entities.UsersRoles.UserRole", b =>
                 {
                     b.HasOne("FastMeiliSync.Domain.Entities.Roles.Role", "Role")
@@ -277,6 +315,9 @@ namespace FastMeiliSync.Infrastructure.Context.Migrations
 
             modelBuilder.Entity("FastMeiliSync.Domain.Entities.Users.User", b =>
                 {
+                    b.Navigation("Token")
+                        .IsRequired();
+
                     b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618

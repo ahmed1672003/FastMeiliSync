@@ -11,10 +11,10 @@ public sealed class UserRepository : Repository<User, Guid>, IUserRepository
         CancellationToken cancellationToken = default
     )
     {
-        var query = _entities.AsQueryable();
+        var query = _entities.AsNoTracking();
         if (includes is not null)
             query = includes(query);
 
-        return query.FirstOrDefaultAsync(x => x.Email.ToLower() == email.ToLower());
+        return query.FirstAsync(x => x.Email.ToLower() == email.ToLower());
     }
 }

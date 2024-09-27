@@ -16,6 +16,11 @@ public sealed record Role : Entity<Guid>, ITrackableCreate, ITrackableUpdate
 
     public IReadOnlyCollection<UserRole> RoleUsers => _roleUsers;
 
+    public void Update(string name)
+    {
+        Name = name;
+    }
+
     public static Role Create(string Name) => new(Name);
 
     public void SetUpdatedOn()

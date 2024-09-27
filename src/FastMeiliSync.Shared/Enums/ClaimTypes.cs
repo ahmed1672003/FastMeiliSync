@@ -2,5 +2,6 @@
 
 public enum CustomClaimTypes
 {
-    Roles
+    Roles,
+    UserId
 }

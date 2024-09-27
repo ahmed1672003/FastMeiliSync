@@ -8,13 +8,9 @@ namespace FastMeiliSync.Infrastructure.JWT;
 
 public sealed class JWTManager : IJWTManager
 {
-    public Task<string> GenerateTokenAsync(
-        User user,
-        Func<User, List<Claim>> getClaims,
-        CancellationToken cancellationToken = default
-    )
+    public Task<string> GenerateTokenAsync(User user, CancellationToken cancellationToken = default)
     {
-        var claims = getClaims(user);
+        var claims = GetClaims(user);
         var symmetricSecurityKey = new SymmetricSecurityKey(
             Encoding.ASCII.GetBytes(JwtSettings.Secret)
         );
@@ -30,5 +26,17 @@ public sealed class JWTManager : IJWTManager
         );
         var accessToken = new JwtSecurityTokenHandler().WriteToken(jwtToken);
         return Task.FromResult(accessToken);
+    }
+
+    private IReadOnlyCollection<Claim> GetClaims(User user)
+    {
+        List<Claim> claims = new();
+
+        claims.AddRange(
+            user.UserRoles.Select(x => new Claim(nameof(CustomClaimTypes.Roles), x.Role.Name))
+        );
+        claims.Add(new Claim(nameof(CustomClaimTypes.UserId), user.Id.ToString()));
+
+        return claims;
     }
 }

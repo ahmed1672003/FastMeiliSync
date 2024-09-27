@@ -17,9 +17,4 @@
     <ProjectReference Include="..\FastMeiliSync.Domain\FastMeiliSync.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Users\Commands\Register\" />
-    <Folder Include="Features\Users\Commands\Update\" />
-  </ItemGroup>
-
 </Project>

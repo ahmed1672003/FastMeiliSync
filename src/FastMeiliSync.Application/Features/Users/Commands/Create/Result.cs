@@ -1,5 +1,4 @@
 ﻿using FastMeiliSync.Application.Features.Roles.Queries.GetById;
-using FastMeiliSync.Domain.Entities.Users;
 
 namespace FastMeiliSync.Application.Features.Users.Commands.Create;
 
@@ -8,26 +7,18 @@ public sealed record CreateUserResult(
     string Name,
     string UserName,
     string Email,
-    DateTime CreatedOn
+    DateTime CreatedOn,
+    IEnumerable<GetRoleByIdResult> Roles
 )
 {
-    public static List<GetRoleByIdResult> Roles { get; set; } = new();
-
-    public static implicit operator CreateUserResult(User user)
-    {
-        var result = new CreateUserResult(
+    public static implicit operator CreateUserResult(User user) =>
+        new(
             user.Id,
             user.Name,
             user.UserName,
             user.Email,
-            user.CreatedOn
+            user.CreatedOn,
+            user.UserRoles.Select(x => x.Role)
+                .Select(x => new GetRoleByIdResult(x.Id, x.Name, x.CreatedOn))
         );
-
-        if (user.UserRoles.Any() && user.UserRoles.Select(x => x.Role).Any())
-        {
-            foreach (var userRole in user.UserRoles)
-                Roles.Add(userRole.Role);
-        }
-        return result;
-    }
 }

@@ -1,7 +1,4 @@
-﻿using System.Security.Claims;
-using FastMeiliSync.Application.Features.Users.Commands.Login;
-
-namespace FastMeiliSync.Application.Features.Users.Commands.Create;
+﻿namespace FastMeiliSync.Application.Features.Users.Commands.Create;
 
 public sealed record LogInUserCommandHandler(
     IMeiliSyncUnitOfWork unitOfWork,
@@ -28,24 +25,22 @@ public sealed record LogInUserCommandHandler(
                 cancellationToken
             );
 
-            if (user.Token != null)
-            {
-                modifiedRows++;
-                await unitOfWork.Tokens.DeleteAsync(user.Token, cancellationToken);
-            }
-
-            var token = await jWTManager.GenerateTokenAsync(
-                user,
-                u =>
-                    u.UserRoles.Select(x => new Claim(nameof(CustomClaimTypes.Roles), x.Role.Name))
-                        .ToList(),
-                cancellationToken
-            );
+            var token = await jWTManager.GenerateTokenAsync(user, cancellationToken);
 
             modifiedRows++;
-            user.AddToken(token);
+            if (user.Token != null)
+                user.ChangeToken(token);
+            else
+                user.AddToken(token);
+
+            modifiedRows++;
+            if (user.UserRoles.Any())
+            {
+                modifiedRows += user.UserRoles.Count * 2;
+            }
 
             await unitOfWork.Users.UpdateAsync(user, cancellationToken);
+
             var success = await unitOfWork.SaveChangesAsync(modifiedRows, cancellationToken);
             if (success)
             {
@@ -58,7 +53,7 @@ public sealed record LogInUserCommandHandler(
                     Result = new(user.Id, token)
                 };
             }
-            await transaction.CommitAsync(cancellationToken);
+            await transaction.RollbackAsync(cancellationToken);
             throw new DatabaseTransactionException();
         }
     }

@@ -27,10 +27,18 @@ public sealed record User : Entity<Guid>, ITrackableCreate, ITrackableUpdate
 
     public IReadOnlyCollection<UserRole> UserRoles => _userRoles;
 
+    public void UpdateProfile(string name, string userName, string email)
+    {
+        Name = name;
+        UserName = userName;
+        Email = email;
+    }
+
     public void AssignToRoles(List<Guid> roleIds)
     {
         if (roleIds == null)
             ArgumentNullException.ThrowIfNull(roleIds);
+        _userRoles.Clear();
 
         _userRoles.AddRange(roleIds.Select(roleId => UserRole.Create(roleId, Id)));
     }
@@ -48,9 +56,16 @@ public sealed record User : Entity<Guid>, ITrackableCreate, ITrackableUpdate
     public static User Create(string name, string userName, string email) =>
         new User(name, userName, email);
 
+    public void ChangeToken(string token)
+    {
+        if (Token == null)
+            return;
+        Token.Update(token);
+    }
+
     public void AddToken(string token)
     {
-        Token = Token.Create(token);
+        Token = Token.Create(Id, token);
     }
 
     public void HashPassword(IPasswordHasher<User> passwordHasher, string password)

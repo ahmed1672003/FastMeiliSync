@@ -1,32 +1,22 @@
-﻿using FastMeiliSync.Domain.Entities.Users;
-
-namespace FastMeiliSync.Application.Features.Roles.Queries.GetById;
+﻿namespace FastMeiliSync.Application.Features.Roles.Queries.GetById;
 
 public sealed record GetUserByIdResult(
     Guid Id,
     string Name,
     string Email,
     string UserName,
-    DateTime CreatedOn
+    DateTime CreatedOn,
+    IEnumerable<GetRoleByIdResult> Roles
 )
 {
-    public static List<GetRoleByIdResult> Roles { get; set; } = new();
-
-    public static implicit operator GetUserByIdResult(User user)
-    {
-        var result = new GetUserByIdResult(
+    public static implicit operator GetUserByIdResult(User user) =>
+        new(
             user.Id,
             user.Name,
-            user.Email,
             user.UserName,
-            user.CreatedOn
+            user.Email,
+            user.CreatedOn,
+            user.UserRoles.Select(x => x.Role)
+                .Select(x => new GetRoleByIdResult(x.Id, x.Name, x.CreatedOn))
         );
-
-        if (user.UserRoles.Any())
-            foreach (var userRole in user.UserRoles)
-                if (userRole != null)
-                    Roles.Add(userRole.Role);
-
-        return result;
-    }
 }

@@ -3,6 +3,7 @@ using FastMeiliSync.Application.Features.Roles.Commands.Delete;
 using FastMeiliSync.Application.Features.Roles.Commands.Update;
 using FastMeiliSync.Application.Features.Roles.Queries.GetById;
 using FastMeiliSync.Application.Features.Roles.Queries.Paginate;
+using FastMeiliSync.Application.Features.Users.Commands.Seed;
 using FastMeiliSync.Shared.Enums;
 using static FastMeiliSync.Application.Features.Roles.Queries.Paginate.PaginateRoleQuery;
 
@@ -10,6 +11,11 @@ namespace FastMeiliSync.API.MeiliSearches.Endpoints.V1;
 
 public sealed class RoleEndpoints
 {
+    public static async Task<IResult> HandleSeedAsync(
+        ISender sender,
+        CancellationToken cancellationToken = default
+    ) => Results.Ok(await sender.Send(new SeedRolesCommand(), cancellationToken));
+
     public static async Task<IResult> HandleCreateAsync(
         CreateRoleCommand command,
         ISender sender,
