@@ -1,6 +1,4 @@
-﻿using FastMeiliSync.Shared.ValidationMessages;
-
-namespace FastMeiliSync.Application.Features.MeiliSearches.Commands.Create;
+﻿namespace FastMeiliSync.Application.Features.MeiliSearches.Commands.Create;
 
 public sealed class CreateMeiliSearchValidator : AbstractValidator<CreateMeiliSearchCommand>
 {
@@ -10,11 +8,29 @@ public sealed class CreateMeiliSearchValidator : AbstractValidator<CreateMeiliSe
     {
         _serviceProvider = serviceProvider;
         var scope = _serviceProvider.CreateScope();
-        ValidateReques(scope.ServiceProvider.GetRequiredService<IMeiliSyncUnitOfWork>());
+        ValidateRequest(scope.ServiceProvider.GetRequiredService<IMeiliSyncUnitOfWork>());
     }
 
-    void ValidateReques(IMeiliSyncUnitOfWork unitOfWork)
+    void ValidateRequest(IMeiliSyncUnitOfWork unitOfWork)
     {
+        RuleFor(x => x.Label)
+            .NotNull()
+            .WithMessage(x => ValidationMessages.MeiliSearch.LabelRequired)
+            .NotEmpty()
+            .WithMessage(x => ValidationMessages.MeiliSearch.LabelRequired);
+
+        RuleFor(x => x.ApiKey)
+            .NotNull()
+            .WithMessage(x => ValidationMessages.MeiliSearch.ApiKeyRequired)
+            .NotEmpty()
+            .WithMessage(x => ValidationMessages.MeiliSearch.ApiKeyRequired);
+
+        RuleFor(x => x.Url)
+            .NotNull()
+            .WithMessage(x => ValidationMessages.MeiliSearch.UrlExist)
+            .NotEmpty()
+            .WithMessage(x => ValidationMessages.MeiliSearch.UrlExist);
+
         RuleFor(x => x)
             .MustAsync(
                 async (req, cancellationToken) =>
@@ -24,7 +40,7 @@ public sealed class CreateMeiliSearchValidator : AbstractValidator<CreateMeiliSe
                     );
                 }
             )
-            .WithMessage(x => ValidationMessages.MeiliSearch.InstanceLabelExist);
+            .WithMessage(x => ValidationMessages.MeiliSearch.LabelExist);
         RuleFor(x => x)
             .MustAsync(
                 async (req, cancellationToken) =>
@@ -34,6 +50,6 @@ public sealed class CreateMeiliSearchValidator : AbstractValidator<CreateMeiliSe
                     );
                 }
             )
-            .WithMessage(x => ValidationMessages.MeiliSearch.InstanceUrlExist);
+            .WithMessage(x => ValidationMessages.MeiliSearch.UrlExist);
     }
 }

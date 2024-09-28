@@ -1,10 +1,10 @@
-﻿namespace FastMeiliSync.Application.Features.Users.Commands.Seed;
+﻿namespace FastMeiliSync.Application.Features.Syncs.Queries.GetById;
 
-public sealed class SeedRolesValidator : AbstractValidator<SeedRolesCommand>
+public sealed class GetSyncByIdValidator : AbstractValidator<GetSyncByIdQuery>
 {
     private readonly IServiceProvider _serviceProvider;
 
-    public SeedRolesValidator(IServiceProvider serviceProvider)
+    public GetSyncByIdValidator(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
         var scope = _serviceProvider.CreateScope();
@@ -17,11 +17,9 @@ public sealed class SeedRolesValidator : AbstractValidator<SeedRolesCommand>
             .MustAsync(
                 async (req, ct) =>
                 {
-                    return !await unitOfWork.Roles.AnyAsync(x =>
-                        x.Name.Trim().ToLower() == nameof(BasicRoles.Admin).ToLower()
-                    );
+                    return await unitOfWork.Syncs.AnyAsync(x => x.Id == req.Id);
                 }
             )
-            .WithMessage(x => ValidationMessages.Role.RoleExist);
+            .WithMessage(x => ValidationMessages.Sync.NotFound);
     }
 }

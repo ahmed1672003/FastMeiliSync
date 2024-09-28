@@ -5,9 +5,10 @@ public sealed record GetSourceByIdResult(
     string Label,
     string Database,
     string Url,
-    SourceType Type
+    SourceType Type,
+    DateTime CreatedOn
 )
 {
     public static implicit operator GetSourceByIdResult(Source source) =>
-        new(source.Id, source.Label, source.Database, source.Url, source.Type);
+        new(source.Id, source.Label, source.Database, source.Url, source.Type, source.CreatedOn);
 }

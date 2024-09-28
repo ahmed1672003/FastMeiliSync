@@ -1,5 +1,4 @@
-﻿using FastMeiliSync.Application.Features.Roles.Queries.GetById;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace FastMeiliSync.Application.Features.Users.Commands.Seed;
 
@@ -22,8 +21,8 @@ internal sealed record SeedUsersCommandHandler(
         {
             var modifiedRows = 0;
 
-            var user = User.Create("admin", "meilisync", "info@meilisync.info");
-            user.HashPassword(passwordHasher, "admin123");
+            var user = User.Create("msync", "msync", "info@msync.info", true);
+            user.HashPassword(passwordHasher, "msync");
 
             var roleId = await unitOfWork.Roles.GetAsync(
                 r => r.Name.ToLower() == nameof(BasicRoles.Admin).ToLower(),

@@ -29,6 +29,15 @@ public class Repository<TEntity, TId> : IRepository<TEntity, TId>
         CancellationToken cancellationToken = default
     ) => ValueTask.FromResult(_entities.Remove(entity));
 
+    public ValueTask DeleteRangeAsync(
+        IEnumerable<TEntity> entities,
+        CancellationToken cancellationToken = default
+    )
+    {
+        _entities.RemoveRange(entities);
+        return ValueTask.CompletedTask;
+    }
+
     public Task<TEntity> GetByIdAsync(
         TId id,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includes = null,

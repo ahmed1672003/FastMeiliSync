@@ -40,6 +40,7 @@ internal sealed record PaginateSourceHandler(IMeiliSyncUnitOfWork unitOfWork)
                 selector: source => new PaginateSourceResult(
                     source.Id,
                     source.Label,
+                    source.Database,
                     source.Url,
                     source.CreatedOn
                 ),

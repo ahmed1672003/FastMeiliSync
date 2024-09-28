@@ -3,7 +3,6 @@ global using System.Reflection;
 global using System.Text;
 global using System.Text.Json;
 global using Carter;
-global using FastMeiliSync.API.ExceptionHandlers;
 global using FastMeiliSync.Application;
 global using FastMeiliSync.Application.Features.MeiliSearches.Commands.Create;
 global using FastMeiliSync.Application.Features.MeiliSearches.Commands.Delete;

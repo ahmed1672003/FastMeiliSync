@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace FastMeiliSync.API.ExceptionHandlers;
+namespace FastMeiliSync.API.Middlewares;
 
 public sealed class GlobalExceptionHandler : IMiddleware
 {
@@ -16,7 +16,6 @@ public sealed class GlobalExceptionHandler : IMiddleware
         }
         catch (Exception ex)
         {
-            _logger.LogError($"Un handeld exception accured: {ex.Message}");
             var requestStatus = GetRequestStatus(ex);
             var resposne = new Response
             {
@@ -35,8 +34,10 @@ public sealed class GlobalExceptionHandler : IMiddleware
         switch (ex)
         {
             case ValidationException:
+                _logger.LogInformation($"Un handeld exception accured: {ex.Message}");
                 return ((int)HttpStatusCode.BadRequest, ex.Message);
             default:
+                _logger.LogError($"Un handeld exception accured: {ex.Message}");
                 return ((int)HttpStatusCode.InternalServerError, "Oops!! something error");
         }
     }

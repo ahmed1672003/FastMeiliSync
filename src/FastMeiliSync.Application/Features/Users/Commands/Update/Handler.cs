@@ -26,10 +26,13 @@ internal sealed record UpdateUserCommandHandler(IMeiliSyncUnitOfWork unitOfWork)
 
             user.UpdateProfile(request.Name, request.UserName, request.Email);
 
-            modifiedRows += user.UserRoles.Count;
+            if (user.UserRoles.Any())
+            {
+                modifiedRows += user.UserRoles.Count;
+                await unitOfWork.UsersRoles.DeleteRangeAsync(user.UserRoles);
+            }
 
             user.AssignToRoles(request.RoleIds);
-
             modifiedRows += user.UserRoles.Count;
 
             modifiedRows++;

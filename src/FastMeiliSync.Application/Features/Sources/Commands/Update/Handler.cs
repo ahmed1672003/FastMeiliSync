@@ -1,6 +1,6 @@
 ﻿namespace FastMeiliSync.Application.Features.Sources.Commands.Update;
 
-internal sealed record UpdateSourceHandler : IRequestHandler<UpdateSourceCommand, Response>
+public sealed record UpdateSourceHandler : IRequestHandler<UpdateSourceCommand, Response>
 {
     readonly IMeiliSyncUnitOfWork _unitOfWork;
 

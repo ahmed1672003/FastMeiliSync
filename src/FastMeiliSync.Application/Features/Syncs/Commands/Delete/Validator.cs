@@ -1,9 +1,25 @@
 ﻿namespace FastMeiliSync.Application.Features.Syncs.Commands.Delete;
 
-internal sealed class DeleteSyncByIdValidator : AbstractValidator<DeleteSyncByIdCommand>
+public sealed class DeleteSyncByIdValidator : AbstractValidator<DeleteSyncByIdCommand>
 {
-    public DeleteSyncByIdValidator()
+    private readonly IServiceProvider _serviceProvider;
+
+    public DeleteSyncByIdValidator(IServiceProvider serviceProvider)
     {
-        // write validation
+        _serviceProvider = serviceProvider;
+        var scope = _serviceProvider.CreateScope();
+        ValidateRequest(scope.ServiceProvider.GetRequiredService<IMeiliSyncUnitOfWork>());
+    }
+
+    void ValidateRequest(IMeiliSyncUnitOfWork unitOfWork)
+    {
+        RuleFor(x => x)
+            .MustAsync(
+                async (req, ct) =>
+                {
+                    return await unitOfWork.Syncs.AnyAsync(x => x.Id == req.Id);
+                }
+            )
+            .WithMessage(x => ValidationMessages.Sync.NotFound);
     }
 }

@@ -1,3 +1,5 @@
+using FastMeiliSync.API.Middlewares;
+
 namespace FastMeiliSync.API;
 
 public class Program
@@ -49,6 +51,7 @@ public class Program
                 };
             });
         builder.Services.AddScoped<GlobalExceptionHandler>();
+        builder.Services.AddScoped<TokenGuard>();
         builder.Services.AddAuthorization();
 
         builder.Services.AddSwaggerGen(options =>
@@ -106,11 +109,12 @@ public class Program
         });
 
         var app = builder.Build();
+        app.UseSwagger();
+        app.UseSwaggerUI();
         app.UseCors("All");
         app.UseStaticFiles();
         app.UseMiddleware<GlobalExceptionHandler>();
-        app.UseSwagger();
-        app.UseSwaggerUI();
+        app.UseMiddleware<TokenGuard>();
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapCarter();

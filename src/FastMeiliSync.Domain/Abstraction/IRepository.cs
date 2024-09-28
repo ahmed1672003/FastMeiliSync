@@ -16,6 +16,10 @@ public interface IRepository<TEntity, TId>
         TEntity entity,
         CancellationToken cancellationToken = default
     );
+    ValueTask DeleteRangeAsync(
+        IEnumerable<TEntity> entities,
+        CancellationToken cancellationToken = default
+    );
     Task<TEntity> GetByIdAsync(
         TId id,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includes = null,

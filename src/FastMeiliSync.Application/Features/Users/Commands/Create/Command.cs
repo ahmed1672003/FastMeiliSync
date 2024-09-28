@@ -1,6 +1,4 @@
-﻿using FastMeiliSync.Domain.Entities.Users;
-
-namespace FastMeiliSync.Application.Features.Users.Commands.Create;
+﻿namespace FastMeiliSync.Application.Features.Users.Commands.Create;
 
 public sealed record CreateUserCommand(
     string Name,
@@ -12,5 +10,5 @@ public sealed record CreateUserCommand(
 ) : IRequest<Response>
 {
     public static implicit operator User(CreateUserCommand command) =>
-        User.Create(command.Name, command.UserName, command.Email);
+        User.Create(command.Name, command.UserName, command.Email, false);
 }

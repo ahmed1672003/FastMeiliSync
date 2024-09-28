@@ -8,11 +8,12 @@ public sealed record User : Entity<Guid>, ITrackableCreate, ITrackableUpdate
 {
     private readonly List<UserRole> _userRoles = new();
 
-    private User(string name, string userName, string email)
+    private User(string name, string userName, string email, bool master)
     {
         Name = name;
         UserName = userName;
         Email = email;
+        Master = master;
     }
 
     private User() { }
@@ -23,6 +24,7 @@ public sealed record User : Entity<Guid>, ITrackableCreate, ITrackableUpdate
     public string HashedPassword { get; private set; }
     public DateTime CreatedOn { get; private set; }
     public DateTime? UpdatedOn { get; private set; }
+    public bool Master { get; private set; }
     public Token Token { get; private set; }
 
     public IReadOnlyCollection<UserRole> UserRoles => _userRoles;
@@ -53,8 +55,8 @@ public sealed record User : Entity<Guid>, ITrackableCreate, ITrackableUpdate
         CreatedOn = DateTime.UtcNow;
     }
 
-    public static User Create(string name, string userName, string email) =>
-        new User(name, userName, email);
+    public static User Create(string name, string userName, string email, bool master) =>
+        new User(name, userName, email, master);
 
     public void ChangeToken(string token)
     {

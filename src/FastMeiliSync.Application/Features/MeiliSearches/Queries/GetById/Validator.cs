@@ -1,6 +1,4 @@
-﻿using FastMeiliSync.Shared.ValidationMessages;
-
-namespace FastMeiliSync.Application.Features.MeiliSearches.Queries.GetById;
+﻿namespace FastMeiliSync.Application.Features.MeiliSearches.Queries.GetById;
 
 public sealed class GetMeiliSearchByIdValidator : AbstractValidator<GetMeiliSearchByIdQuery>
 {
@@ -10,11 +8,10 @@ public sealed class GetMeiliSearchByIdValidator : AbstractValidator<GetMeiliSear
     {
         _serviceProvider = serviceProvider;
         var scope = _serviceProvider.CreateScope();
-        var unitOfWork = scope.ServiceProvider.GetRequiredService<IMeiliSyncUnitOfWork>();
-        ValidateReques(unitOfWork);
+        ValidateRequest(scope.ServiceProvider.GetRequiredService<IMeiliSyncUnitOfWork>());
     }
 
-    void ValidateReques(IMeiliSyncUnitOfWork unitOfWork)
+    void ValidateRequest(IMeiliSyncUnitOfWork unitOfWork)
     {
         RuleFor(x => x)
             .MustAsync(
@@ -23,6 +20,6 @@ public sealed class GetMeiliSearchByIdValidator : AbstractValidator<GetMeiliSear
                     return await unitOfWork.MeiliSearches.AnyAsync(x => x.Id == req.Id);
                 }
             )
-            .WithMessage(x => ValidationMessages.MeiliSearch.InstanceNotFound);
+            .WithMessage(x => ValidationMessages.MeiliSearch.NotFound);
     }
 }

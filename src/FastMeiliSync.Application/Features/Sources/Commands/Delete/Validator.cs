@@ -2,8 +2,24 @@
 
 internal class DeleteSourceByIdValidator : AbstractValidator<DeleteSourceByIdCommand>
 {
-    public DeleteSourceByIdValidator()
+    private readonly IServiceProvider _serviceProvider;
+
+    public DeleteSourceByIdValidator(IServiceProvider serviceProvider)
     {
-        // write validation
+        _serviceProvider = serviceProvider;
+        var scope = _serviceProvider.CreateScope();
+        ValidateRequest(scope.ServiceProvider.GetRequiredService<IMeiliSyncUnitOfWork>());
+    }
+
+    void ValidateRequest(IMeiliSyncUnitOfWork unitOfWork)
+    {
+        RuleFor(x => x)
+            .MustAsync(
+                async (req, ct) =>
+                {
+                    return await unitOfWork.Sources.AnyAsync(x => x.Id == req.Id);
+                }
+            )
+            .WithMessage(x => ValidationMessages.Source.NotFound);
     }
 }
