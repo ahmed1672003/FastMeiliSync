@@ -9,7 +9,6 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddHttpClient();
-        builder.Services.AddCarter();
         builder.Services.AddHttpContextAccessor();
 
         builder.Services.AddCors(cfg =>
@@ -107,6 +106,7 @@ public class Program
                 }
             );
         });
+        builder.Services.AddCarter();
 
         var app = builder.Build();
         app.UseSwagger();
@@ -114,10 +114,10 @@ public class Program
         app.UseCors("All");
         app.UseStaticFiles();
         app.UseMiddleware<GlobalExceptionHandler>();
-        app.UseMiddleware<TokenGuard>();
+        app.MapCarter();
         app.UseAuthentication();
         app.UseAuthorization();
-        app.MapCarter();
+        app.UseMiddleware<TokenGuard>();
 
         await app.RunAsync();
     }

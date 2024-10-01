@@ -9,9 +9,7 @@ public sealed class RoleModule : ICarterModule
         var groupe = app.MapGroup(Router.RoleRoutes.V1.BASE_ROLE_URL)
             .WithTags(nameof(Role).ToLower());
 
-        groupe
-            .MapPost(Router.RoleRoutes.V1.Seed, RoleEndpoints.HandleSeedAsync)
-            .RequireAuthorization();
+        groupe.MapPost(Router.RoleRoutes.V1.Seed, RoleEndpoints.HandleSeedAsync).AllowAnonymous();
 
         groupe.MapPost(string.Empty, RoleEndpoints.HandleCreateAsync).RequireAuthorization();
 

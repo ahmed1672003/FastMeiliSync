@@ -14,8 +14,15 @@ public sealed class TokenGuard : IMiddleware
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
         var authHeader = context.Request.Headers["Authorization"].ToString();
+        var path = context.Request?.Path.Value?.ToLower() ?? string.Empty;
 
-        if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("bearer "))
+        if (
+            !path.EndsWith("login")
+            && !path.EndsWith("seed")
+            && context.User.Identity.IsAuthenticated
+            && !string.IsNullOrEmpty(authHeader)
+            && authHeader.StartsWith("bearer ")
+        )
         {
             var token = authHeader.Substring("Bearer ".Length).Trim();
 
@@ -31,7 +38,7 @@ public sealed class TokenGuard : IMiddleware
                 };
                 context.Response.StatusCode = 333;
                 context.Response.ContentType = "application/json";
-                await context.Response.WriteAsync(JsonSerializer.Serialize(resposne));
+                await context.Response.WriteAsJsonAsync(resposne);
                 return;
             }
         }
