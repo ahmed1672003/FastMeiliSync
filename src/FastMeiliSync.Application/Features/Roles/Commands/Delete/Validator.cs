@@ -6,6 +6,9 @@ public sealed class DeleteRoleValidator : AbstractValidator<DeleteRoleCommand>
 
     public DeleteRoleValidator(IServiceProvider serviceProvider)
     {
+        RuleLevelCascadeMode = CascadeMode.Stop;
+        ClassLevelCascadeMode = CascadeMode.Stop;
+
         _serviceProvider = serviceProvider;
         var scope = _serviceProvider.CreateScope();
         ValidateRequest(scope.ServiceProvider.GetRequiredService<IMeiliSyncUnitOfWork>());

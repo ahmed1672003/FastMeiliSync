@@ -8,6 +8,9 @@ public sealed class DeleteUserValidator : AbstractValidator<DeleteUserCommand>
 
     public DeleteUserValidator(IServiceProvider serviceProvider)
     {
+        RuleLevelCascadeMode = CascadeMode.Stop;
+        ClassLevelCascadeMode = CascadeMode.Stop;
+
         _serviceProvider = serviceProvider;
         var scope = _serviceProvider.CreateScope();
         ValidateRequest(

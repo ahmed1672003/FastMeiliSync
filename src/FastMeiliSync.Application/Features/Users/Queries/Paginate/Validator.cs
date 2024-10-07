@@ -2,5 +2,9 @@
 
 public sealed class PaginateUserValidator : AbstractValidator<PaginateUserQuery>
 {
-    public PaginateUserValidator() { }
+    public PaginateUserValidator()
+    {
+        RuleLevelCascadeMode = CascadeMode.Stop;
+        ClassLevelCascadeMode = CascadeMode.Stop;
+    }
 }

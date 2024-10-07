@@ -4,5 +4,9 @@ namespace FastMeiliSync.Application.Features.Sources.Queries.Paginate;
 
 public sealed class PaginateSourceValidator : AbstractValidator<PaginateMeiliSearchQuery>
 {
-    public PaginateSourceValidator() { }
+    public PaginateSourceValidator()
+    {
+        RuleLevelCascadeMode = CascadeMode.Stop;
+        ClassLevelCascadeMode = CascadeMode.Stop;
+    }
 }

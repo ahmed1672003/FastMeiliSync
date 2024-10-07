@@ -1,5 +1,4 @@
-﻿using FastMeiliSync.Domain.Entities.Users;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace FastMeiliSync.Application;
 

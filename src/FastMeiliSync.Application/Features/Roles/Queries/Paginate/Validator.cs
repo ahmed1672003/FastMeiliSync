@@ -2,5 +2,9 @@
 
 public sealed class PaginateRoleValidator : AbstractValidator<PaginateRoleQuery>
 {
-    public PaginateRoleValidator() { }
+    public PaginateRoleValidator()
+    {
+        RuleLevelCascadeMode = CascadeMode.Stop;
+        ClassLevelCascadeMode = CascadeMode.Stop;
+    }
 }

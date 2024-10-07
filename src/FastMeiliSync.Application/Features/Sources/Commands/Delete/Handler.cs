@@ -1,37 +1,55 @@
-﻿namespace FastMeiliSync.Application.Features.Sources.Commands.Delete;
+﻿using FastMeiliSync.Application.Abstractions;
+using FastMeiliSync.Application.Hubs;
+using Microsoft.AspNetCore.SignalR;
 
-internal class DeleteSourceByIdHandler : IRequestHandler<DeleteSourceByIdCommand, Response>
+namespace FastMeiliSync.Application.Features.Sources.Commands.Delete;
+
+internal class DeleteSourceByIdHandler(
+    IMeiliSyncUnitOfWork unitOfWork,
+    IHubContext<FastMeiliSyncHub, IFastMeiliSyncHubClient> hubContext
+) : IRequestHandler<DeleteSourceByIdCommand, Response>
 {
-    readonly IMeiliSyncUnitOfWork _unitOfWork;
-
-    public DeleteSourceByIdHandler(IMeiliSyncUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
-
     public async Task<Response> Handle(
         DeleteSourceByIdCommand command,
         CancellationToken cancellationToken
     )
     {
         using (
-            var tranasction = await _unitOfWork.BeginTransactionAsync(
+            var tranasction = await unitOfWork.BeginTransactionAsync(
                 IsolationLevel.Snapshot,
                 cancellationToken
             )
         )
         {
             var modifiedRows = 0;
-            var source = await _unitOfWork.Sources.GetByIdAsync(
+            var source = await unitOfWork.Sources.GetByIdAsync(
                 command.Id,
                 cancellationToken: cancellationToken
             );
             modifiedRows++;
-            await _unitOfWork.Sources.DeleteAsync(source, cancellationToken);
-            var success = await _unitOfWork.SaveChangesAsync(modifiedRows, cancellationToken);
+            await unitOfWork.Sources.DeleteAsync(source, cancellationToken);
+            var success = await unitOfWork.SaveChangesAsync(modifiedRows, cancellationToken);
             if (success)
             {
                 await tranasction.CommitAsync(cancellationToken);
+
+                var response = new ResponseOf<Guid>
+                {
+                    Success = true,
+                    StatusCode = (int)HttpStatusCode.OK,
+                    Message = "operation done successfully",
+                    Result = source.Id
+                };
+
+                await hubContext.Clients.All.NotifySourceAsync(
+                    OperationType.Delete,
+                    response,
+                    cancellationToken
+                );
+
                 return new Response
                 {
-                    Success = !default(bool),
+                    Success = true,
                     StatusCode = (int)HttpStatusCode.OK,
                     Message = "operation done successfully"
                 };

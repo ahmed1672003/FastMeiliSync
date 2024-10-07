@@ -2,5 +2,9 @@
 
 public sealed class PaginateMeiliSearchValidator : AbstractValidator<PaginateMeiliSearchQuery>
 {
-    public PaginateMeiliSearchValidator() { }
+    public PaginateMeiliSearchValidator()
+    {
+        RuleLevelCascadeMode = CascadeMode.Stop;
+        ClassLevelCascadeMode = CascadeMode.Stop;
+    }
 }

@@ -6,6 +6,9 @@ internal class DeleteSourceByIdValidator : AbstractValidator<DeleteSourceByIdCom
 
     public DeleteSourceByIdValidator(IServiceProvider serviceProvider)
     {
+        RuleLevelCascadeMode = CascadeMode.Stop;
+        ClassLevelCascadeMode = CascadeMode.Stop;
+
         _serviceProvider = serviceProvider;
         var scope = _serviceProvider.CreateScope();
         ValidateRequest(scope.ServiceProvider.GetRequiredService<IMeiliSyncUnitOfWork>());

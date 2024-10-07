@@ -6,6 +6,9 @@ public sealed class SeedUsersValidator : AbstractValidator<SeedUsersCommand>
 
     public SeedUsersValidator(IServiceProvider serviceProvider)
     {
+        RuleLevelCascadeMode = CascadeMode.Stop;
+        ClassLevelCascadeMode = CascadeMode.Stop;
+
         _serviceProvider = serviceProvider;
         var scope = _serviceProvider.CreateScope();
         ValidateRequest(scope.ServiceProvider.GetRequiredService<IMeiliSyncUnitOfWork>());

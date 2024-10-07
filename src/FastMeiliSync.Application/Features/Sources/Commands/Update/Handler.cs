@@ -1,25 +1,28 @@
-﻿namespace FastMeiliSync.Application.Features.Sources.Commands.Update;
+﻿using FastMeiliSync.Application.Abstractions;
+using FastMeiliSync.Application.Hubs;
+using Microsoft.AspNetCore.SignalR;
 
-public sealed record UpdateSourceHandler : IRequestHandler<UpdateSourceCommand, Response>
+namespace FastMeiliSync.Application.Features.Sources.Commands.Update;
+
+public sealed record UpdateSourceHandler(
+    IMeiliSyncUnitOfWork unitOfWork,
+    IHubContext<FastMeiliSyncHub, IFastMeiliSyncHubClient> hubContext
+) : IRequestHandler<UpdateSourceCommand, Response>
 {
-    readonly IMeiliSyncUnitOfWork _unitOfWork;
-
-    public UpdateSourceHandler(IMeiliSyncUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
-
     public async Task<Response> Handle(
         UpdateSourceCommand command,
         CancellationToken cancellationToken
     )
     {
         using (
-            var transaction = await _unitOfWork.BeginTransactionAsync(
+            var transaction = await unitOfWork.BeginTransactionAsync(
                 IsolationLevel.Snapshot,
                 cancellationToken
             )
         )
         {
             var modifiedRows = 0;
-            Source source = await _unitOfWork.Sources.GetByIdAsync(
+            Source source = await unitOfWork.Sources.GetByIdAsync(
                 command.Id,
                 cancellationToken: cancellationToken
             );
@@ -27,18 +30,27 @@ public sealed record UpdateSourceHandler : IRequestHandler<UpdateSourceCommand, 
             source.Update(command.Label, command.Database, command.Url, command.Type);
 
             modifiedRows++;
-            var sourceEntry = await _unitOfWork.Sources.UpdateAsync(source, cancellationToken);
-            var success = await _unitOfWork.SaveChangesAsync(modifiedRows, cancellationToken);
+            var sourceEntry = await unitOfWork.Sources.UpdateAsync(source, cancellationToken);
+            var success = await unitOfWork.SaveChangesAsync(modifiedRows, cancellationToken);
             if (success)
             {
                 await transaction.CommitAsync(cancellationToken);
-                return new ResponseOf<UpdateSourceResult>
+
+                var response = new ResponseOf<UpdateSourceResult>
                 {
                     StatusCode = (int)HttpStatusCode.OK,
                     Success = success,
                     Result = sourceEntry.Entity,
                     Message = "operation done successfully"
                 };
+
+                await hubContext.Clients.All.NotifySourceAsync(
+                    OperationType.Update,
+                    response,
+                    cancellationToken
+                );
+
+                return response;
             }
             await transaction.RollbackAsync(cancellationToken);
             throw new DatabaseTransactionException();

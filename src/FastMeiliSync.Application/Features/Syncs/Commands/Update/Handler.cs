@@ -1,7 +1,13 @@
-﻿namespace FastMeiliSync.Application.Features.Syncs.Commands.Update;
+﻿using FastMeiliSync.Application.Abstractions;
+using FastMeiliSync.Application.Hubs;
+using Microsoft.AspNetCore.SignalR;
 
-internal class UpdateSyncCommandHandler(IMeiliSyncUnitOfWork unitOfWork)
-    : IRequestHandler<UpdateSyncCommand, Response>
+namespace FastMeiliSync.Application.Features.Syncs.Commands.Update;
+
+internal class UpdateSyncCommandHandler(
+    IMeiliSyncUnitOfWork unitOfWork,
+    IHubContext<FastMeiliSyncHub, IFastMeiliSyncHubClient> hubContext
+) : IRequestHandler<UpdateSyncCommand, Response>
 {
     public async Task<Response> Handle(
         UpdateSyncCommand request,
@@ -33,13 +39,21 @@ internal class UpdateSyncCommandHandler(IMeiliSyncUnitOfWork unitOfWork)
                 await syncEntry.Reference(x => x.Source).LoadAsync();
                 await syncEntry.Reference(x => x.MeiliSearch).LoadAsync();
 
-                return new ResponseOf<UpdateSyncResult>
+                var response = new ResponseOf<UpdateSyncResult>
                 {
                     Success = success,
                     Result = syncEntry.Entity,
                     StatusCode = (int)HttpStatusCode.OK,
                     Message = "operation done successfully"
                 };
+
+                await hubContext.Clients.All.NotifySyncAsync(
+                    OperationType.Update,
+                    response,
+                    cancellationToken
+                );
+
+                return response;
             }
 
             await transaction.RollbackAsync(cancellationToken);

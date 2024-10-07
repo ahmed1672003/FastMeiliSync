@@ -1,7 +1,13 @@
-﻿namespace FastMeiliSync.Application.Features.MeiliSearches.Commands.Update;
+﻿using FastMeiliSync.Application.Abstractions;
+using FastMeiliSync.Application.Hubs;
+using Microsoft.AspNetCore.SignalR;
 
-internal class UpdateMeiliSearchHandler(IMeiliSyncUnitOfWork unitOfWork)
-    : IRequestHandler<UpdateMeiliSearchCommand, Response>
+namespace FastMeiliSync.Application.Features.MeiliSearches.Commands.Update;
+
+internal class UpdateMeiliSearchHandler(
+    IMeiliSyncUnitOfWork unitOfWork,
+    IHubContext<FastMeiliSyncHub, IFastMeiliSyncHubClient> hubContext
+) : IRequestHandler<UpdateMeiliSearchCommand, Response>
 {
     public async Task<Response> Handle(
         UpdateMeiliSearchCommand request,
@@ -34,13 +40,21 @@ internal class UpdateMeiliSearchHandler(IMeiliSyncUnitOfWork unitOfWork)
             if (success)
             {
                 await tranasction.CommitAsync(cancellationToken);
-                return new ResponseOf<UpdateMeiliSearchResult>
+                var response = new ResponseOf<UpdateMeiliSearchResult>
                 {
                     Success = success,
                     Result = meiliSearchEntry.Entity,
                     StatusCode = (int)HttpStatusCode.OK,
                     Message = "operation done successfully"
                 };
+
+                await hubContext.Clients.All.NotifyMeiliSearchAsync(
+                    OperationType.Update,
+                    response,
+                    cancellationToken
+                );
+
+                return response;
             }
             await tranasction.RollbackAsync(cancellationToken);
             throw new DatabaseTransactionException();

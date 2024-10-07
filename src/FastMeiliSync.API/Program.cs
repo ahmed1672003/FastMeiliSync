@@ -1,4 +1,5 @@
 using FastMeiliSync.API.Middlewares;
+using FastMeiliSync.Application.Hubs;
 
 namespace FastMeiliSync.API;
 
@@ -52,7 +53,7 @@ public class Program
         builder.Services.AddScoped<GlobalExceptionHandler>();
         builder.Services.AddScoped<TokenGuard>();
         builder.Services.AddAuthorization();
-
+        builder.Services.AddSignalR();
         builder.Services.AddSwaggerGen(options =>
         {
             var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -118,6 +119,8 @@ public class Program
         app.UseAuthentication();
         app.UseAuthorization();
         app.UseMiddleware<TokenGuard>();
+
+        app.MapHub<FastMeiliSyncHub>("/fast-meili-sync-hub");
 
         await app.RunAsync();
     }

@@ -8,6 +8,9 @@ public sealed class LogInUserValidator : AbstractValidator<LogInUserCommand>
 
     public LogInUserValidator(IServiceProvider serviceProvider)
     {
+        RuleLevelCascadeMode = CascadeMode.Stop;
+        ClassLevelCascadeMode = CascadeMode.Stop;
+
         _serviceProvider = serviceProvider;
         var scope = _serviceProvider.CreateScope();
         IPasswordHasher<User> passwordValidator = scope.ServiceProvider.GetRequiredService<
