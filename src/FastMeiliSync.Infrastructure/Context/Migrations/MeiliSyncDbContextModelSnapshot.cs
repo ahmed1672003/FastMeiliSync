@@ -81,28 +81,6 @@ namespace FastMeiliSync.Infrastructure.Context.Migrations
                     b.ToTable("Role", "Public");
                 });
 
-            modelBuilder.Entity("FastMeiliSync.Domain.Entities.Session", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("ConnectionId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("IpAddress")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Session");
-                });
-
             modelBuilder.Entity("FastMeiliSync.Domain.Entities.Sources.Source", b =>
                 {
                     b.Property<Guid>("Id")

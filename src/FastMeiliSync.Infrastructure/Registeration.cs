@@ -21,7 +21,10 @@ public static class Registeration
         services.AddDbContextPool<IMeiliSyncDbContext, MeiliSyncDbContext>(
             cfg =>
             {
-                cfg.UseNpgsql(configuration.GetConnectionString("MEILI_SYNC_CONNECTION"));
+                cfg.UseNpgsql(configuration.GetConnectionString("MEILI_SYNC_CONNECTION"))
+                    .UseQueryTrackingBehavior(
+                        QueryTrackingBehavior.NoTrackingWithIdentityResolution
+                    );
                 cfg.EnableSensitiveDataLogging().EnableDetailedErrors();
                 cfg.AddInterceptors(new OnSaveChangesInterceptor());
             },
