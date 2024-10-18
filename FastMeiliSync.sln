@@ -6,13 +6,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{445171F1-C73
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastMeiliSync.Domain", "src\FastMeiliSync.Domain\FastMeiliSync.Domain.csproj", "{A2D32476-0396-4E72-B6CF-E0C0DC66E377}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastMeiliSync.Shared", "src\FastMeiliSync.Shared\FastMeiliSync.Shared.csproj", "{120D8C3A-C7A9-42D7-9C1B-405A568379F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastMeiliSync.Shared", "src\FastMeiliSync.Shared\FastMeiliSync.Shared.csproj", "{120D8C3A-C7A9-42D7-9C1B-405A568379F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastMeiliSync.Application", "src\FastMeiliSync.Application\FastMeiliSync.Application.csproj", "{2AF65BF3-4FDD-47C1-BB46-D713E88D0249}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastMeiliSync.Application", "src\FastMeiliSync.Application\FastMeiliSync.Application.csproj", "{2AF65BF3-4FDD-47C1-BB46-D713E88D0249}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastMeiliSync.Infrastructure", "src\FastMeiliSync.Infrastructure\FastMeiliSync.Infrastructure.csproj", "{F0D5FA8B-9A89-4EC7-B889-CA8D5B0101F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastMeiliSync.Infrastructure", "src\FastMeiliSync.Infrastructure\FastMeiliSync.Infrastructure.csproj", "{F0D5FA8B-9A89-4EC7-B889-CA8D5B0101F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastMeiliSync.API", "src\FastMeiliSync.API\FastMeiliSync.API.csproj", "{80605495-7E10-4FAC-B15F-1C62F4A78425}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastMeiliSync.API", "src\FastMeiliSync.API\FastMeiliSync.API.csproj", "{80605495-7E10-4FAC-B15F-1C62F4A78425}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
