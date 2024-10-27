@@ -1,4 +1,6 @@
-﻿using FastMeiliSync.Application.Features.Syncs.Queries.Paginate;
+﻿using FastMeiliSync.Application.Features.Syncs.Commands.Start;
+using FastMeiliSync.Application.Features.Syncs.Commands.Stop;
+using FastMeiliSync.Application.Features.Syncs.Queries.Paginate;
 using FastMeiliSync.Shared.Enums;
 using static FastMeiliSync.Application.Features.Syncs.Queries.Paginate.PaginateSyncQuery;
 
@@ -125,6 +127,32 @@ public sealed class SyncEndpoints
         ISender sender,
         CancellationToken cancellationToken = default
     ) => Results.Ok(await sender.Send(new DeleteSyncByIdCommand(id), cancellationToken));
+
+    /// <summary>
+    /// start sync meili~search instance with source
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="sender"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public static async Task<IResult> HandleStartSyncAsync(
+        Guid id,
+        ISender sender,
+        CancellationToken cancellationToken = default
+    ) => Results.Ok(await sender.Send(new StartSyncCommand(id), cancellationToken));
+
+    /// <summary>
+    /// stop sync meili~search instance with source
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="sender"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public static async Task<IResult> HandleStopSyncAsync(
+        Guid id,
+        ISender sender,
+        CancellationToken cancellationToken = default
+    ) => Results.Ok(await sender.Send(new StopSyncCommand(id), cancellationToken));
 
     /// <summary>
     /// get specific sync

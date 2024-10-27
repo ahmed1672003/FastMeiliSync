@@ -1,13 +1,7 @@
-﻿using FastMeiliSync.Application.Abstractions;
-using FastMeiliSync.Application.Hubs;
-using Microsoft.AspNetCore.SignalR;
+﻿namespace FastMeiliSync.Application.Features.Sources.Commands.Delete;
 
-namespace FastMeiliSync.Application.Features.Sources.Commands.Delete;
-
-internal class DeleteSourceByIdHandler(
-    IMeiliSyncUnitOfWork unitOfWork,
-    IHubContext<FastMeiliSyncHub, IFastMeiliSyncHubClient> hubContext
-) : IRequestHandler<DeleteSourceByIdCommand, Response>
+internal class DeleteSourceByIdHandler(IMeiliSyncUnitOfWork unitOfWork)
+    : IRequestHandler<DeleteSourceByIdCommand, Response>
 {
     public async Task<Response> Handle(
         DeleteSourceByIdCommand command,
@@ -32,20 +26,6 @@ internal class DeleteSourceByIdHandler(
             if (success)
             {
                 await tranasction.CommitAsync(cancellationToken);
-
-                var response = new ResponseOf<Guid>
-                {
-                    Success = true,
-                    StatusCode = (int)HttpStatusCode.OK,
-                    Message = "operation done successfully",
-                    Result = source.Id
-                };
-
-                await hubContext.Clients.All.NotifySourceAsync(
-                    OperationType.Delete,
-                    response,
-                    cancellationToken
-                );
 
                 return new Response
                 {

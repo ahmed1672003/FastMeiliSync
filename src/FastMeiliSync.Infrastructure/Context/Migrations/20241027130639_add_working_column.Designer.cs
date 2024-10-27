@@ -3,6 +3,7 @@ using System;
 using FastMeiliSync.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FastMeiliSync.Infrastructure.Context.Migrations
 {
     [DbContext(typeof(MeiliSyncDbContext))]
-    partial class MeiliSyncDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241027130639_add_working_column")]
+    partial class add_working_column
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

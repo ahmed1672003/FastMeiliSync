@@ -50,6 +50,8 @@ public static class Router
         {
             public const string BASE_SYNC_URL = $"{BASE_URL}/v1/sync";
             public const string Paginate = "paginate";
+            public const string Stop = "stop";
+            public const string Start = "start";
         }
     }
 }

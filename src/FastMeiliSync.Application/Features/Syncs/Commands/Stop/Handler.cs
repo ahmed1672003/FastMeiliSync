@@ -1,12 +1,11 @@
-﻿namespace FastMeiliSync.Application.Features.Syncs.Commands.Update;
+﻿using FastMeiliSync.Application.Features.Syncs.Queries.GetById;
 
-internal class UpdateSyncCommandHandler(IMeiliSyncUnitOfWork unitOfWork)
-    : IRequestHandler<UpdateSyncCommand, Response>
+namespace FastMeiliSync.Application.Features.Syncs.Commands.Stop;
+
+internal sealed record StopSyncHandler(IMeiliSyncUnitOfWork unitOfWork)
+    : IRequestHandler<StopSyncCommand, Response>
 {
-    public async Task<Response> Handle(
-        UpdateSyncCommand request,
-        CancellationToken cancellationToken
-    )
+    public async Task<Response> Handle(StopSyncCommand request, CancellationToken cancellationToken)
     {
         using (
             var transaction = await unitOfWork.BeginTransactionAsync(
@@ -16,12 +15,14 @@ internal class UpdateSyncCommandHandler(IMeiliSyncUnitOfWork unitOfWork)
         )
         {
             var modifiedRows = 0;
+
             var sync = await unitOfWork.Syncs.GetByIdAsync(
                 request.Id,
+                stopTracking: false,
                 cancellationToken: cancellationToken
             );
 
-            sync.Update(request.Label, request.SourceId, request.MeiliSearchId);
+            sync.Stop();
 
             modifiedRows++;
             var syncEntry = await unitOfWork.Syncs.UpdateAsync(sync, cancellationToken);
@@ -30,18 +31,17 @@ internal class UpdateSyncCommandHandler(IMeiliSyncUnitOfWork unitOfWork)
             if (success)
             {
                 await transaction.CommitAsync(cancellationToken);
-                await syncEntry.Reference(x => x.Source).LoadAsync();
-                await syncEntry.Reference(x => x.MeiliSearch).LoadAsync();
+                await syncEntry.Reference(x => x.Source).LoadAsync(cancellationToken);
+                await syncEntry.Reference(x => x.MeiliSearch).LoadAsync(cancellationToken);
 
-                return new ResponseOf<UpdateSyncResult>
+                return new ResponseOf<GetSyncByIdResult>
                 {
-                    Success = success,
-                    Result = syncEntry.Entity,
+                    Message = ValidationMessages.Success,
+                    Success = true,
                     StatusCode = (int)HttpStatusCode.OK,
-                    Message = "operation done successfully"
+                    Result = sync
                 };
             }
-
             await transaction.RollbackAsync(cancellationToken);
             throw new DatabaseTransactionException();
         }

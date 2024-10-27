@@ -1,13 +1,7 @@
-﻿using FastMeiliSync.Application.Abstractions;
-using FastMeiliSync.Application.Hubs;
-using Microsoft.AspNetCore.SignalR;
+﻿namespace FastMeiliSync.Application.Features.Syncs.Commands.Delete;
 
-namespace FastMeiliSync.Application.Features.Syncs.Commands.Delete;
-
-internal sealed record DeleteSyncByIdHandler(
-    IMeiliSyncUnitOfWork unitOfWork,
-    IHubContext<FastMeiliSyncHub, IFastMeiliSyncHubClient> hubContext
-) : IRequestHandler<DeleteSyncByIdCommand, Response>
+internal sealed record DeleteSyncByIdHandler(IMeiliSyncUnitOfWork unitOfWork)
+    : IRequestHandler<DeleteSyncByIdCommand, Response>
 {
     public async Task<Response> Handle(
         DeleteSyncByIdCommand request,
@@ -34,18 +28,6 @@ internal sealed record DeleteSyncByIdHandler(
             {
                 await transaction.CommitAsync(cancellationToken);
 
-                var response = new ResponseOf<Guid>()
-                {
-                    StatusCode = (int)HttpStatusCode.OK,
-                    Success = success,
-                    Message = "operation done successfully",
-                    Result = sync.Id
-                };
-                await hubContext.Clients.All.NotifySyncAsync(
-                    OperationType.Delete,
-                    response,
-                    cancellationToken
-                );
                 return new Response
                 {
                     StatusCode = (int)HttpStatusCode.OK,

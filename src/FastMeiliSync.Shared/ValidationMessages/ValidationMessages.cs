@@ -19,6 +19,8 @@ public class ValidationMessages
         public const string LabelExist = "Sync label exist.";
         public const string NotFound = "Sync not found.";
         public const string SyncExist = "Sync exist.";
+        public const string SyncAlreadyStarted = "Sync already started.";
+        public const string SyncAlreadyStopped = "Sync already stopped.";
     }
 
     public static class User

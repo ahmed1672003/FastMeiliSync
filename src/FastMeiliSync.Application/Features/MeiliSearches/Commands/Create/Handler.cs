@@ -1,13 +1,7 @@
-﻿using FastMeiliSync.Application.Abstractions;
-using FastMeiliSync.Application.Hubs;
-using Microsoft.AspNetCore.SignalR;
+﻿namespace FastMeiliSync.Application.Features.MeiliSearches.Commands.Create;
 
-namespace FastMeiliSync.Application.Features.MeiliSearches.Commands.Create;
-
-internal sealed record CreateMeiliSaerchHandler(
-    IMeiliSyncUnitOfWork unitOfWork,
-    IHubContext<FastMeiliSyncHub, IFastMeiliSyncHubClient> hubContext
-) : IRequestHandler<CreateMeiliSearchCommand, Response>
+internal sealed record CreateMeiliSaerchHandler(IMeiliSyncUnitOfWork unitOfWork)
+    : IRequestHandler<CreateMeiliSearchCommand, Response>
 {
     public async Task<Response> Handle(
         CreateMeiliSearchCommand request,
@@ -42,11 +36,6 @@ internal sealed record CreateMeiliSaerchHandler(
                     StatusCode = (int)HttpStatusCode.OK,
                     Message = "operation done successfully"
                 };
-                await hubContext.Clients.All.NotifyMeiliSearchAsync(
-                    OperationType.Create,
-                    response,
-                    cancellationToken
-                );
                 return response;
             }
             await transaction.RollbackAsync(cancellationToken);
