@@ -11,5 +11,7 @@ public sealed class SyncModule : ICarterModule
         groupe.MapDelete(string.Empty, SyncEndpoints.HandleDeleteByIdAsync);
         groupe.MapGet(string.Empty, SyncEndpoints.HandleGetByIdAsync);
         groupe.MapGet(Router.SyncRoutes.V1.Paginate, SyncEndpoints.HandlePaginateAsync);
+        groupe.MapPatch(Router.SyncRoutes.V1.Start, SyncEndpoints.HandleStartSyncAsync);
+        groupe.MapPatch(Router.SyncRoutes.V1.Stop, SyncEndpoints.HandleStopSyncAsync);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using FastMeiliSync.Domain.Entities.Tokens;
 using FastMeiliSync.Infrastructure.Context;
 using FastMeiliSync.Infrastructure.Context.Interceptors;
+using FastMeiliSync.Infrastructure.Hangfire;
 using FastMeiliSync.Infrastructure.JWT;
 using FastMeiliSync.Infrastructure.Repositories;
 using FastMeiliSync.Infrastructure.SearchEngine.Document;
@@ -47,7 +48,8 @@ public static class Registeration
         services
             .AddScoped<IIndexService, IndexService>()
             .AddScoped<IDocumentService, DocumentService>()
-            .AddScoped<IJWTManager, JWTManager>();
+            .AddScoped<IJWTManager, JWTManager>()
+            .AddScoped<IJobsService, JobsService>();
         return services;
     }
 }

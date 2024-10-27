@@ -1,13 +1,7 @@
-﻿using FastMeiliSync.Application.Abstractions;
-using FastMeiliSync.Application.Hubs;
-using Microsoft.AspNetCore.SignalR;
+﻿namespace FastMeiliSync.Application.Features.Syncs.Commands.Create;
 
-namespace FastMeiliSync.Application.Features.Syncs.Commands.Create;
-
-internal sealed record CreateSyncCommandHandler(
-    IMeiliSyncUnitOfWork unitOfWork,
-    IHubContext<FastMeiliSyncHub, IFastMeiliSyncHubClient> hubContext
-) : IRequestHandler<CreateSyncCommand, Response>
+internal sealed record CreateSyncCommandHandler(IMeiliSyncUnitOfWork unitOfWork)
+    : IRequestHandler<CreateSyncCommand, Response>
 {
     public async Task<Response> Handle(
         CreateSyncCommand request,
@@ -33,19 +27,13 @@ internal sealed record CreateSyncCommandHandler(
                 await syncEntry.Reference(x => x.MeiliSearch).LoadAsync(cancellationToken);
                 await syncEntry.Reference(x => x.Source).LoadAsync(cancellationToken);
 
-                var response = new ResponseOf<CreateSyncResult>
+                return new ResponseOf<CreateSyncResult>
                 {
                     StatusCode = (int)HttpStatusCode.OK,
                     Success = success,
                     Result = syncEntry.Entity,
                     Message = "operation done successfully"
                 };
-                await hubContext.Clients.All.NotifySyncAsync(
-                    OperationType.Create,
-                    response,
-                    cancellationToken
-                );
-                return response;
             }
             await transaction.RollbackAsync(cancellationToken);
             throw new DatabaseTransactionException();

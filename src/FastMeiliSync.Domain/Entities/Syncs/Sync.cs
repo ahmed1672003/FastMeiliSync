@@ -17,6 +17,7 @@ public sealed record Sync : Entity<Guid>, ITrackableCreate, ITrackableUpdate
     public Guid MeiliSearchId { get; private set; }
     public DateTime CreatedOn { get; private set; }
     public DateTime? UpdatedOn { get; private set; }
+    public bool Working { get; private set; }
     public Source Source { get; private set; }
     public MeiliSearch MeiliSearch { get; private set; }
 
@@ -40,5 +41,15 @@ public sealed record Sync : Entity<Guid>, ITrackableCreate, ITrackableUpdate
     public void SetUpdatedOn()
     {
         UpdatedOn = DateTime.UtcNow;
+    }
+
+    public void Start()
+    {
+        Working = true;
+    }
+
+    public void Stop()
+    {
+        Working = false;
     }
 }

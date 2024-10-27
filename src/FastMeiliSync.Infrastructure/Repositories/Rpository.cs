@@ -189,6 +189,4 @@ public class Repository<TEntity, TId> : IRepository<TEntity, TId>
 
         return await query.CountAsync(cancellationToken);
     }
-
-    public IQueryable<TEntity> Query() => _entities.AsQueryable();
 }

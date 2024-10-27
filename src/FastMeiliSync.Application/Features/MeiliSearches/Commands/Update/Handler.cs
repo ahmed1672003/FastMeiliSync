@@ -1,13 +1,7 @@
-﻿using FastMeiliSync.Application.Abstractions;
-using FastMeiliSync.Application.Hubs;
-using Microsoft.AspNetCore.SignalR;
+﻿namespace FastMeiliSync.Application.Features.MeiliSearches.Commands.Update;
 
-namespace FastMeiliSync.Application.Features.MeiliSearches.Commands.Update;
-
-internal class UpdateMeiliSearchHandler(
-    IMeiliSyncUnitOfWork unitOfWork,
-    IHubContext<FastMeiliSyncHub, IFastMeiliSyncHubClient> hubContext
-) : IRequestHandler<UpdateMeiliSearchCommand, Response>
+internal class UpdateMeiliSearchHandler(IMeiliSyncUnitOfWork unitOfWork)
+    : IRequestHandler<UpdateMeiliSearchCommand, Response>
 {
     public async Task<Response> Handle(
         UpdateMeiliSearchCommand request,
@@ -47,12 +41,6 @@ internal class UpdateMeiliSearchHandler(
                     StatusCode = (int)HttpStatusCode.OK,
                     Message = "operation done successfully"
                 };
-
-                await hubContext.Clients.All.NotifyMeiliSearchAsync(
-                    OperationType.Update,
-                    response,
-                    cancellationToken
-                );
 
                 return response;
             }
