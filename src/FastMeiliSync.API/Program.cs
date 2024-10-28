@@ -1,4 +1,6 @@
 using FastMeiliSync.API.Middlewares;
+using FastMeiliSync.Infrastructure.Redis;
+using FastMeiliSync.Shared.Constants;
 using Hangfire;
 
 namespace FastMeiliSync.API;
@@ -108,12 +110,26 @@ public class Program
         });
         builder.Services.AddCarter();
 
+        // builder.Services.AddHangfireServer();
+
         var app = builder.Build();
+
+        var scope = app.Services.CreateScope();
+
+        var redisService = scope.ServiceProvider.GetService<IRedisService>();
+        await redisService.ConsumeMessageAsync(RedisConstants.DEFAULT_CHANNEL);
+
         app.UseSwagger();
         app.UseSwaggerUI();
         app.UseCors("All");
         app.UseStaticFiles();
-        app.UseHangfireDashboard();
+        app.UseHangfireDashboard(
+            options: new DashboardOptions()
+            {
+                DashboardTitle = "Fast Meili~Sync Dashboard",
+                DarkModeEnabled = true,
+            }
+        );
         app.UseMiddleware<GlobalExceptionHandler>();
         app.MapCarter();
         app.UseAuthentication();

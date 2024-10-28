@@ -16,9 +16,11 @@
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.10" />
     <PackageReference Include="Npgsql.Json.NET" Version="8.0.5" />
+    <PackageReference Include="StackExchange.Redis" Version="2.8.16" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FastMeiliSync.Application\FastMeiliSync.Application.csproj" />
     <ProjectReference Include="..\FastMeiliSync.Domain\FastMeiliSync.Domain.csproj" />
   </ItemGroup>
 

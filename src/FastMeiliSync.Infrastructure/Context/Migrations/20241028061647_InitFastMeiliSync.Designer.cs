@@ -12,15 +12,15 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FastMeiliSync.Infrastructure.Context.Migrations
 {
     [DbContext(typeof(MeiliSyncDbContext))]
-    [Migration("20240927070900_InitTokne")]
-    partial class InitTokne
+    [Migration("20241028061647_InitFastMeiliSync")]
+    partial class InitFastMeiliSync
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("ProductVersion", "8.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -145,6 +145,9 @@ namespace FastMeiliSync.Infrastructure.Context.Migrations
                     b.Property<DateTime?>("UpdatedOn")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<bool>("Working")
+                        .HasColumnType("boolean");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Label")
@@ -201,6 +204,9 @@ namespace FastMeiliSync.Infrastructure.Context.Migrations
                     b.Property<string>("HashedPassword")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<bool>("Master")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()

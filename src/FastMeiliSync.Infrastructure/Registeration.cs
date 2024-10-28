@@ -1,14 +1,18 @@
-﻿using FastMeiliSync.Domain.Entities.Tokens;
+﻿using FastMeiliSync.Application.Abstractions;
+using FastMeiliSync.Domain.Entities.Tokens;
 using FastMeiliSync.Infrastructure.Context;
 using FastMeiliSync.Infrastructure.Context.Interceptors;
-using FastMeiliSync.Infrastructure.Hangfire;
+using FastMeiliSync.Infrastructure.Hosted;
 using FastMeiliSync.Infrastructure.JWT;
+using FastMeiliSync.Infrastructure.Postgres.Service;
+using FastMeiliSync.Infrastructure.Redis;
 using FastMeiliSync.Infrastructure.Repositories;
 using FastMeiliSync.Infrastructure.SearchEngine.Document;
 using FastMeiliSync.Infrastructure.SearchEngine.Index;
 using FastMeiliSync.Infrastructure.UnitOfWorks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using StackExchange.Redis;
 
 namespace FastMeiliSync.Infrastructure;
 
@@ -49,7 +53,18 @@ public static class Registeration
             .AddScoped<IIndexService, IndexService>()
             .AddScoped<IDocumentService, DocumentService>()
             .AddScoped<IJWTManager, JWTManager>()
-            .AddScoped<IJobsService, JobsService>();
+            .AddScoped<IWal2JosnService, Wal2JosnService>()
+            .AddScoped<IRedisService, RedisService>();
+        services.AddSingleton<IConnectionMultiplexer>(sp =>
+            ConnectionMultiplexer.Connect(
+                configuration.GetConnectionString("Redis")!,
+                cfg =>
+                {
+                    cfg.AbortOnConnectFail = false;
+                }
+            )
+        );
+        services.AddHostedService<SyncHostedService>();
         return services;
     }
 }
