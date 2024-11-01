@@ -1,6 +1,4 @@
 using FastMeiliSync.API.Middlewares;
-using FastMeiliSync.Infrastructure.Redis;
-using FastMeiliSync.Shared.Constants;
 using Hangfire;
 
 namespace FastMeiliSync.API;
@@ -116,8 +114,8 @@ public class Program
 
         var scope = app.Services.CreateScope();
 
-        var redisService = scope.ServiceProvider.GetService<IRedisService>();
-        await redisService.ConsumeMessageAsync(RedisConstants.DEFAULT_CHANNEL);
+        //  var redisService = scope.ServiceProvider.GetService<IRedisService>();
+        //  await redisService.ConsumeMessageAsync(RedisConstants.DEFAULT_CHANNEL);
 
         app.UseSwagger();
         app.UseSwaggerUI();

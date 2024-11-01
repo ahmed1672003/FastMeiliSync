@@ -20,7 +20,7 @@ internal sealed record PaginateRoleHandler(IMeiliSyncUnitOfWork unitOfWork)
                 _ => r => r.CreatedOn,
             };
 
-            var totalCount = await unitOfWork.MeiliSearches.CountAsync(
+            var totalCount = await unitOfWork.Roles.CountAsync(
                 cancellationToken: cancellationToken
             );
 

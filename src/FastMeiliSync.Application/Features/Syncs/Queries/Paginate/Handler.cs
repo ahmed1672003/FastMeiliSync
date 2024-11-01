@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using static FastMeiliSync.Application.Features.Syncs.Queries.Paginate.PaginateSyncQuery;
+﻿using static FastMeiliSync.Application.Features.Syncs.Queries.Paginate.PaginateSyncQuery;
 
 namespace FastMeiliSync.Application.Features.Syncs.Queries.Paginate;
 
@@ -23,7 +22,7 @@ internal sealed record PaginateSyncHandler(IMeiliSyncUnitOfWork unitOfWork)
                 _ => s => s.CreatedOn,
             };
 
-            var totalCount = await unitOfWork.MeiliSearches.CountAsync(
+            var totalCount = await unitOfWork.Syncs.CountAsync(
                 cancellationToken: cancellationToken
             );
 
