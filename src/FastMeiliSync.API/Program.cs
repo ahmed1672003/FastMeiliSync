@@ -1,5 +1,4 @@
 using FastMeiliSync.API.Middlewares;
-using Hangfire;
 
 namespace FastMeiliSync.API;
 
@@ -121,13 +120,13 @@ public class Program
         app.UseSwaggerUI();
         app.UseCors("All");
         app.UseStaticFiles();
-        app.UseHangfireDashboard(
-            options: new DashboardOptions()
-            {
-                DashboardTitle = "Fast Meili~Sync Dashboard",
-                DarkModeEnabled = true,
-            }
-        );
+        //app.UseHangfireDashboard(
+        //    options: new DashboardOptions()
+        //    {
+        //        DashboardTitle = "Fast Meili~Sync Dashboard",
+        //        DarkModeEnabled = true,
+        //    }
+        //);
         app.UseMiddleware<GlobalExceptionHandler>();
         app.MapCarter();
         app.UseAuthentication();
